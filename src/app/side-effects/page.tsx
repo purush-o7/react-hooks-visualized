@@ -6,7 +6,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Ruler } from "lucide-react";
 
 const hooks = [
   {
@@ -14,6 +14,13 @@ const hooks = [
     label: "useEffect",
     icon: RefreshCw,
     description: "Run side effects — fetching data, subscriptions, timers.",
+  },
+  {
+    href: "/side-effects/use-layout-effect",
+    label: "useLayoutEffect",
+    icon: Ruler,
+    description:
+      "Measure and mutate the DOM synchronously before the browser paints.",
   },
 ];
 

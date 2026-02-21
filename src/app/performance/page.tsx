@@ -6,7 +6,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Brain, Repeat } from "lucide-react";
+import { Brain, Repeat, Hourglass, Timer } from "lucide-react";
 
 const hooks = [
   {
@@ -20,6 +20,20 @@ const hooks = [
     label: "useCallback",
     icon: Repeat,
     description: "Memoize functions to prevent unnecessary re-renders.",
+  },
+  {
+    href: "/performance/use-transition",
+    label: "useTransition",
+    icon: Hourglass,
+    description:
+      "Keep the UI responsive while heavy state updates render in the background.",
+  },
+  {
+    href: "/performance/use-deferred-value",
+    label: "useDeferredValue",
+    icon: Timer,
+    description:
+      "Defer expensive re-renders so the input stays snappy while the display catches up.",
   },
 ];
 

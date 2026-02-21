@@ -31,8 +31,8 @@ const reactCategories = [
     label: "Side Effects",
     icon: Zap,
     description:
-      "useEffect — synchronize with external systems, fetch data, run timers.",
-    hookCount: 1,
+      "useEffect and useLayoutEffect — synchronize with external systems and measure the DOM before paint.",
+    hookCount: 2,
   },
   {
     href: "/context",
@@ -47,16 +47,16 @@ const reactCategories = [
     label: "Refs",
     icon: Pointer,
     description:
-      "useRef — access DOM elements and persist mutable values across renders.",
-    hookCount: 1,
+      "useRef, useId, and useImperativeHandle — access DOM elements, generate unique IDs, and control exposed refs.",
+    hookCount: 3,
   },
   {
     href: "/performance",
     label: "Performance",
     icon: Gauge,
     description:
-      "useMemo and useCallback — optimize rendering through memoization.",
-    hookCount: 2,
+      "useMemo, useCallback, useTransition, and useDeferredValue — optimize rendering through memoization and concurrent features.",
+    hookCount: 4,
   },
   {
     href: "/custom-hooks",

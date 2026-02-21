@@ -19,6 +19,11 @@ import {
   Zap,
   Gauge,
   Link2,
+  Hourglass,
+  Timer,
+  Ruler,
+  Fingerprint,
+  SlidersHorizontal,
 } from "lucide-react";
 import {
   Sidebar,
@@ -78,6 +83,11 @@ const reactCategories: Category[] = [
         label: "useEffect",
         icon: RefreshCw,
       },
+      {
+        href: "/side-effects/use-layout-effect",
+        label: "useLayoutEffect",
+        icon: Ruler,
+      },
     ],
   },
   {
@@ -92,7 +102,15 @@ const reactCategories: Category[] = [
     label: "Refs",
     href: "/refs",
     icon: Pointer,
-    hooks: [{ href: "/refs/use-ref", label: "useRef", icon: Pointer }],
+    hooks: [
+      { href: "/refs/use-ref", label: "useRef", icon: Pointer },
+      { href: "/refs/use-id", label: "useId", icon: Fingerprint },
+      {
+        href: "/refs/use-imperative-handle",
+        label: "useImperativeHandle",
+        icon: SlidersHorizontal,
+      },
+    ],
   },
   {
     label: "Performance",
@@ -104,6 +122,16 @@ const reactCategories: Category[] = [
         href: "/performance/use-callback",
         label: "useCallback",
         icon: Repeat,
+      },
+      {
+        href: "/performance/use-transition",
+        label: "useTransition",
+        icon: Hourglass,
+      },
+      {
+        href: "/performance/use-deferred-value",
+        label: "useDeferredValue",
+        icon: Timer,
       },
     ],
   },

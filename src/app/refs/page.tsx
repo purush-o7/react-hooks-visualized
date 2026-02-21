@@ -6,7 +6,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Pointer } from "lucide-react";
+import { Pointer, Fingerprint, SlidersHorizontal } from "lucide-react";
 
 const hooks = [
   {
@@ -14,6 +14,20 @@ const hooks = [
     label: "useRef",
     icon: Pointer,
     description: "Access DOM elements and persist values across renders.",
+  },
+  {
+    href: "/refs/use-id",
+    label: "useId",
+    icon: Fingerprint,
+    description:
+      "Generate unique IDs for accessibility attributes that stay stable across SSR and hydration.",
+  },
+  {
+    href: "/refs/use-imperative-handle",
+    label: "useImperativeHandle",
+    icon: SlidersHorizontal,
+    description:
+      "Customize the ref handle exposed to parent components with a curated API.",
   },
 ];
 
