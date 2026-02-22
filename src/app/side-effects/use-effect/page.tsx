@@ -4,12 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
 
-import { BrokenTimer } from "./_components/broken-timer";
-import { FixedTimer } from "./_components/fixed-timer";
-import { DependencyGuide } from "./_components/dependency-guide";
-import { PlaygroundTitleSync } from "./_components/playground-title-sync";
-import { PlaygroundStopwatch } from "./_components/playground-stopwatch";
-import { PlaygroundWindowSize } from "./_components/playground-window-size";
+import { BrokenDJ } from "./_components/broken-dj";
+import { FixedDJ } from "./_components/fixed-dj";
+import { DependencyGuideDJ } from "./_components/dependency-guide-dj";
+import { PlaygroundNowPlaying } from "./_components/playground-now-playing";
+import { PlaygroundBeatLoop } from "./_components/playground-beat-loop";
+import { PlaygroundKeyboardShortcuts } from "./_components/playground-keyboard-shortcuts";
 
 export default function UseEffectPage() {
   return (
@@ -25,52 +25,55 @@ export default function UseEffectPage() {
           per="word"
           className="text-muted-foreground"
         >
-          React renders UI. But what about everything else — timers, fetches, subscriptions?
+          React renders UI. But who handles the music? Timers, subscriptions,
+          events — the DJ booth of your component.
         </TextEffect>
       </div>
 
-      {/* Section 1: The Problem */}
+      {/* Section 1: The Chaotic DJ */}
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Problem</h2>
+        <h2 className="text-2xl font-bold">The Chaotic DJ</h2>
         <p className="text-muted-foreground">
-          What happens when you put a side effect directly in the component
-          body? Every render creates a new one without cleaning the old.
+          What happens when you drop a beat directly in the component body?
+          Every render starts a new track without stopping the old one — pure
+          noise.
         </p>
-        <BrokenTimer />
+        <BrokenDJ />
       </section>
 
       <Separator />
 
-      {/* Section 2: The Solution */}
+      {/* Section 2: The Pro DJ */}
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Fix: useEffect</h2>
+        <h2 className="text-2xl font-bold">The Pro DJ: useEffect</h2>
         <p className="text-muted-foreground">
-          useEffect runs your code AFTER render, and the cleanup function
-          runs before the next effect or when the component unmounts.
+          useEffect runs your code AFTER render, and the cleanup function stops
+          the old beat before the next one plays. One clean track at a time.
         </p>
-        <FixedTimer />
+        <FixedDJ />
       </section>
 
+      {/* Section 3: The Mixing Board */}
       <section className="space-y-4">
-        <h2 className="text-xl font-bold">The Dependency Array</h2>
-        <DependencyGuide />
+        <h2 className="text-xl font-bold">The Mixing Board</h2>
+        <DependencyGuideDJ />
       </section>
 
       <Separator />
 
-      {/* Section 3: Playground */}
+      {/* Section 4: Playground */}
       <section className="space-y-6">
         <div>
           <h2 className="text-2xl font-bold mb-2">Playground</h2>
           <p className="text-muted-foreground">
-            useEffect connects React to the outside world — the DOM, timers,
-            event listeners, and more. Try these examples.
+            useEffect connects React to the outside world — the browser tab,
+            intervals, event listeners, and more. Spin these decks.
           </p>
         </div>
 
-        <PlaygroundTitleSync />
-        <PlaygroundStopwatch />
-        <PlaygroundWindowSize />
+        <PlaygroundNowPlaying />
+        <PlaygroundBeatLoop />
+        <PlaygroundKeyboardShortcuts />
       </section>
     </div>
   );
