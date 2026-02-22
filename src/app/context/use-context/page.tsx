@@ -4,12 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
 
-import { PropDrilling } from "./_components/prop-drilling";
-import { ContextSolution } from "./_components/context-solution";
-import { ThreeStepGuide } from "./_components/three-step-guide";
-import { PlaygroundTheme } from "./_components/playground-theme";
-import { PlaygroundUserProfile } from "./_components/playground-user-profile";
-import { PlaygroundLanguage } from "./_components/playground-language";
+import { CourierChain } from "./_components/courier-chain";
+import { EncryptedChannel } from "./_components/encrypted-channel";
+import { SpyPlaybook } from "./_components/spy-playbook";
+import { PlaygroundSafeHouse } from "./_components/playground-safe-house";
+import { PlaygroundAgentDossier } from "./_components/playground-agent-dossier";
+import { PlaygroundCodeLanguage } from "./_components/playground-code-language";
 
 export default function UseContextPage() {
   return (
@@ -25,52 +25,55 @@ export default function UseContextPage() {
           per="word"
           className="text-muted-foreground"
         >
-          What if a deeply nested component needs data from the top?
+          What if a field agent could receive classified intel without a single
+          courier?
         </TextEffect>
       </div>
 
-      {/* Section 1: The Problem */}
+      {/* Section 1: The Courier Chain */}
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Problem: Prop Drilling</h2>
+        <h2 className="text-2xl font-bold">The Courier Chain</h2>
         <p className="text-muted-foreground">
-          Passing props through layers of components that don&apos;t even use
-          them. The deeper the tree, the worse it gets.
+          Prop drilling is like passing classified documents through a chain of
+          couriers — every intermediary sees the secret, and each one is a
+          liability.
         </p>
-        <PropDrilling />
+        <CourierChain />
       </section>
 
       <Separator />
 
-      {/* Section 2: The Solution */}
+      {/* Section 2: The Encrypted Channel */}
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Fix: useContext</h2>
+        <h2 className="text-2xl font-bold">The Encrypted Channel</h2>
         <p className="text-muted-foreground">
-          Provide data at the top, consume it anywhere below. Middle layers
-          stay clean.
+          useContext creates an encrypted channel — HQ broadcasts directly to
+          the field agent. No intermediaries, no leaks.
         </p>
-        <ContextSolution />
+        <EncryptedChannel />
       </section>
 
+      {/* Section 3: The Spy Playbook */}
       <section className="space-y-4">
-        <h2 className="text-xl font-bold">The Three-Step Pattern</h2>
-        <ThreeStepGuide />
+        <h2 className="text-xl font-bold">The Spy Playbook</h2>
+        <SpyPlaybook />
       </section>
 
       <Separator />
 
-      {/* Section 3: Playground */}
+      {/* Section 4: Field Operations */}
       <section className="space-y-6">
         <div>
-          <h2 className="text-2xl font-bold mb-2">Playground</h2>
+          <h2 className="text-2xl font-bold mb-2">Field Operations</h2>
           <p className="text-muted-foreground">
-            Context shines for app-wide settings like themes, user data, and
-            language. Try these live examples.
+            Every spy needs field practice. Try these operations — each one uses
+            context to share intel across the network.
           </p>
         </div>
 
-        <PlaygroundTheme />
-        <PlaygroundUserProfile />
-        <PlaygroundLanguage />
+        <PlaygroundSafeHouse />
+        <PlaygroundAgentDossier />
+        <PlaygroundCodeLanguage />
       </section>
     </div>
   );
