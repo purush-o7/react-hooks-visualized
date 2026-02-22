@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  Activity,
   BookOpen,
   RefreshCw,
   Eye,
@@ -24,6 +25,11 @@ import {
   Ruler,
   Fingerprint,
   SlidersHorizontal,
+  RotateCcw,
+  Play,
+  GitBranch,
+  Flame,
+  Equal,
 } from "lucide-react";
 import {
   Sidebar,
@@ -57,6 +63,20 @@ type Category = {
   href: string;
   icon: React.ComponentType<{ className?: string }>;
   hooks: HookItem[];
+};
+
+const renderingCategory: Category = {
+  label: "React Rendering",
+  href: "/rendering",
+  icon: Activity,
+  hooks: [
+    { href: "/rendering/what-is-rendering", label: "What is Rendering?", icon: Eye },
+    { href: "/rendering/variables-reset", label: "Variables Reset", icon: RotateCcw },
+    { href: "/rendering/code-reexecution", label: "Code Re-execution", icon: Play },
+    { href: "/rendering/render-cascade", label: "Render Cascade", icon: GitBranch },
+    { href: "/rendering/expensive-work", label: "Expensive Work", icon: Flame },
+    { href: "/rendering/reference-trap", label: "Reference Trap", icon: Equal },
+  ],
 };
 
 const reactCategories: Category[] = [
@@ -230,6 +250,17 @@ export function AppSidebar() {
         </Link>
       </SidebarHeader>
       <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>Fundamentals</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <CategoryItem
+                category={renderingCategory}
+                pathname={pathname}
+              />
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupLabel>React Hooks</SidebarGroupLabel>
           <SidebarGroupContent>

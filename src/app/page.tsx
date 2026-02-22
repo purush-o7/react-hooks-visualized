@@ -8,6 +8,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
+  Activity,
   Box,
   Zap,
   Link2,
@@ -89,6 +90,32 @@ export default function Home() {
           examples, and interactive demos.
         </p>
       </div>
+
+      <section className="mb-10">
+        <div className="flex items-center gap-2 mb-4">
+          <h2 className="text-xl font-semibold">Fundamentals</h2>
+          <Badge variant="default">Start Here</Badge>
+        </div>
+        <Link href="/rendering">
+          <Card className="transition-colors hover:border-primary/50 hover:shadow-md cursor-pointer">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <Activity className="size-4 text-muted-foreground" />
+                <CardTitle className="text-base">React Rendering</CardTitle>
+                <Badge variant="secondary" className="ml-auto text-[10px]">
+                  6 topics
+                </Badge>
+              </div>
+              <CardDescription>
+                How rendering works, what triggers re-renders, and why every
+                hook depends on the render cycle. Read this first.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </Link>
+      </section>
+
+      <Separator className="my-8" />
 
       <section className="mb-10">
         <div className="flex items-center gap-2 mb-4">
