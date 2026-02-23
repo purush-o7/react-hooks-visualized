@@ -4,12 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
 
-import { MessyForm } from "./_components/messy-form";
-import { CleanForm } from "./_components/clean-form";
-import { BeforeAfter } from "./_components/before-after";
-import { PlaygroundTodo } from "./_components/playground-todo";
-import { PlaygroundShoppingCart } from "./_components/playground-shopping-cart";
-import { PlaygroundTrafficLight } from "./_components/playground-traffic-light";
+import { ChaoticGroundControl } from "./_components/chaotic-ground-control";
+import { FlightCommander } from "./_components/flight-commander";
+import { MissionBriefing } from "./_components/mission-briefing";
+import { PlaygroundMissionChecklist } from "./_components/playground-mission-checklist";
+import { PlaygroundCargoBay } from "./_components/playground-cargo-bay";
+import { PlaygroundLaunchSequence } from "./_components/playground-launch-sequence";
 
 export default function UseReducerPage() {
   return (
@@ -25,52 +25,54 @@ export default function UseReducerPage() {
           per="word"
           className="text-muted-foreground"
         >
-          What happens when your state logic becomes a tangled mess?
+          What if ground control had a single Flight Commander processing every
+          command through one unified protocol?
         </TextEffect>
       </div>
 
-      {/* Section 1: The Problem */}
+      {/* Section 1: Chaotic Ground Control */}
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Messy Way</h2>
+        <h2 className="text-2xl font-bold">Chaotic Ground Control</h2>
         <p className="text-muted-foreground">
-          A form with 5 fields means 5 useState calls, 5 setter functions, and
-          reset logic that touches every single one.
+          5 systems, 5 operators, 5 separate radios — and a reset that requires
+          calling every single station.
         </p>
-        <MessyForm />
+        <ChaoticGroundControl />
       </section>
 
       <Separator />
 
-      {/* Section 2: The Solution */}
+      {/* Section 2: The Flight Commander */}
       <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Fix: useReducer</h2>
+        <h2 className="text-2xl font-bold">The Flight Commander</h2>
         <p className="text-muted-foreground">
-          Same form, but all state logic lives in one reducer function.
-          Dispatch an action, and the reducer decides what happens.
+          Same ship, but all commands go through one Flight Computer. Dispatch a
+          command, and the reducer computes the new ship state.
         </p>
-        <CleanForm />
+        <FlightCommander />
       </section>
 
+      {/* Section 3: Mission Briefing */}
       <section className="space-y-4">
-        <h2 className="text-xl font-bold">Before vs After</h2>
-        <BeforeAfter />
+        <h2 className="text-xl font-bold">Mission Briefing</h2>
+        <MissionBriefing />
       </section>
 
       <Separator />
 
-      {/* Section 3: Playground */}
+      {/* Section 4: Mission Operations */}
       <section className="space-y-6">
         <div>
-          <h2 className="text-2xl font-bold mb-2">Playground</h2>
+          <h2 className="text-2xl font-bold mb-2">Mission Operations</h2>
           <p className="text-muted-foreground">
-            useReducer shines with complex state — lists, nested objects, and
-            state machines. Try these interactive examples.
+            useReducer shines with complex state — mission checklists, cargo
+            manifests, and launch sequences. Run these operations.
           </p>
         </div>
 
-        <PlaygroundTodo />
-        <PlaygroundShoppingCart />
-        <PlaygroundTrafficLight />
+        <PlaygroundMissionChecklist />
+        <PlaygroundCargoBay />
+        <PlaygroundLaunchSequence />
       </section>
     </div>
   );
