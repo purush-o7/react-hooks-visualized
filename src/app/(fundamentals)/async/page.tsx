@@ -7,6 +7,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { CommonMistakes, type Mistake } from "@/components/common-mistakes";
 import { Orbit, ArrowRightLeft, Play, Zap } from "lucide-react";
 
 const topics = [
@@ -45,6 +46,93 @@ export const metadata: Metadata = {
   description: "Event loop, callbacks to promises, async/await, and handling async in React",
 };
 
+const ASYNC_MISTAKES: Mistake[] = [
+  {
+    title: "Using async directly on useEffect callback",
+    subtitle: "Marking the useEffect callback as async breaks cleanup",
+    filename: "data-loader.tsx",
+    wrongCode: `// async callback returns a Promise, not a cleanup function
+useEffect(async () => {
+  const res = await fetch("/api/data");
+  const data = await res.json();
+  setData(data);
+}, []);`,
+    rightCode: `// Inner async function — effect itself stays synchronous
+useEffect(() => {
+  async function loadData() {
+    const res = await fetch("/api/data");
+    const data = await res.json();
+    setData(data);
+  }
+  loadData();
+}, []);`,
+    explanation:
+      "useEffect expects its callback to return either undefined or a cleanup function. An async function always returns a Promise, so React can never call your cleanup function. Define an inner async function and call it immediately instead.",
+  },
+  {
+    title: "Race conditions from stale async responses",
+    subtitle: "Fast typing fires multiple requests — the slowest one overwrites the latest",
+    filename: "search.tsx",
+    wrongCode: `// No protection against out-of-order responses
+useEffect(() => {
+  async function search() {
+    const results = await fetchResults(query);
+    setResults(results); // might be from an older query!
+  }
+  search();
+}, [query]);`,
+    rightCode: `// AbortController cancels stale requests
+useEffect(() => {
+  const controller = new AbortController();
+
+  async function search() {
+    try {
+      const res = await fetch(\`/api/search?q=\${query}\`, {
+        signal: controller.signal,
+      });
+      const data = await res.json();
+      setResults(data);
+    } catch (err) {
+      if (err.name !== "AbortError") setError(err);
+    }
+  }
+  search();
+
+  return () => controller.abort();
+}, [query]);`,
+    explanation:
+      "When a user types rapidly, multiple requests fire. Responses can arrive out of order — if the oldest request finishes last, it overwrites the newest data. Use AbortController in the cleanup function to cancel stale requests when the query changes or the component unmounts.",
+  },
+  {
+    title: "Not handling promise rejections",
+    subtitle: "Forgetting try/catch around await calls or .catch() on promise chains",
+    filename: "data-loader.tsx",
+    wrongCode: `// If fetchData rejects, error is swallowed entirely
+useEffect(() => {
+  async function load() {
+    const data = await fetchData(); // unhandled rejection!
+    setData(data);
+  }
+  load();
+}, []);`,
+    rightCode: `useEffect(() => {
+  async function load() {
+    try {
+      const data = await fetchData();
+      setData(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  load();
+}, []);`,
+    explanation:
+      "Forgetting try/catch around await calls means errors silently disappear, or cause UnhandledPromiseRejectionWarning. In React, an unhandled rejection leaves the component in a broken state with no error UI. Always wrap await in try/catch and set error state for the UI.",
+  },
+];
+
 export default function AsyncPage() {
   return (
     <div className="max-w-4xl">
@@ -81,6 +169,10 @@ export default function AsyncPage() {
             </Card>
           </Link>
         ))}
+      </div>
+
+      <div className="mt-10">
+        <CommonMistakes mistakes={ASYNC_MISTAKES} />
       </div>
     </div>
   );

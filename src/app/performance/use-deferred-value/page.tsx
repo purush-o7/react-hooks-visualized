@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { CommonMistakes, type Mistake } from "@/components/common-mistakes";
 
 import { OverloadedBoard } from "./_components/overloaded-board";
 import { SmartBoard } from "./_components/smart-board";
@@ -11,6 +12,87 @@ import { StationBriefing } from "./_components/station-briefing";
 import { PlaygroundAnnouncements } from "./_components/playground-announcements";
 import { PlaygroundConnectionFinder } from "./_components/playground-connection-finder";
 import { PlaygroundScheduleGuide } from "./_components/playground-schedule-guide";
+
+const USE_DEFERRED_VALUE_MISTAKES: Mistake[] = [
+  {
+    title: "Deferring trivial state that doesn't cause slow renders",
+    subtitle: "Applying useDeferredValue to small lists or simple computations",
+    filename: "tiny-list.tsx",
+    wrongCode: `function TinyList({ query }) {
+  const deferredQuery = useDeferredValue(query);
+  const items = ["Apple", "Banana", "Cherry", "Date"];
+
+  // Filtering 4 items takes microseconds — deferring adds overhead
+  const filtered = items.filter(i =>
+    i.toLowerCase().includes(deferredQuery.toLowerCase())
+  );
+
+  return <ul>{filtered.map(i => <li key={i}>{i}</li>)}</ul>;
+}`,
+    rightCode: `function TinyList({ query }) {
+  // Just compute directly — no deferring needed
+  const items = ["Apple", "Banana", "Cherry", "Date"];
+  const filtered = items.filter(i =>
+    i.toLowerCase().includes(query.toLowerCase())
+  );
+
+  return <ul>{filtered.map(i => <li key={i}>{i}</li>)}</ul>;
+}`,
+    explanation:
+      "useDeferredValue doesn't make code faster — it reschedules work so urgent updates commit first, then processes the deferred update in a second render pass. If the original render was already fast, you've added an extra render cycle for zero benefit. Only use it for genuinely expensive rendering (10,000+ items, complex charts).",
+  },
+  {
+    title: "Forgetting to pair with useMemo or React.memo",
+    subtitle: "Using useDeferredValue without memoizing the expensive work",
+    filename: "search.tsx",
+    wrongCode: `function SearchResults({ query }) {
+  const deferredQuery = useDeferredValue(query);
+
+  // Runs on EVERY render — deferred or not
+  const results = hugeDataset.filter(item =>
+    item.name.includes(deferredQuery)
+  );
+
+  return <ResultsList results={results} />;
+}`,
+    rightCode: `function SearchResults({ query }) {
+  const deferredQuery = useDeferredValue(query);
+
+  // Only re-filters when deferredQuery actually changes
+  const results = useMemo(
+    () => hugeDataset.filter(item => item.name.includes(deferredQuery)),
+    [deferredQuery]
+  );
+
+  return <MemoizedResultsList results={results} />;
+}
+
+const MemoizedResultsList = React.memo(ResultsList);`,
+    explanation:
+      "useDeferredValue only helps if the child component can bail out of re-rendering when the deferred value hasn't changed yet. Without useMemo on the computation or React.memo on the child, the expensive work runs on every render regardless — both urgent and deferred passes.",
+  },
+  {
+    title: "Passing a new object reference every render",
+    subtitle: "Creating a new object and passing it directly to useDeferredValue",
+    filename: "search.tsx",
+    wrongCode: `function Search({ query, filter }) {
+  // New object every render — always "different" to React
+  const deferredParams = useDeferredValue({ query, filter });
+
+  return <Results params={deferredParams} />;
+  // Can cause infinite background re-renders!
+}`,
+    rightCode: `function Search({ query, filter }) {
+  // Defer primitive values individually
+  const deferredQuery = useDeferredValue(query);
+  const deferredFilter = useDeferredValue(filter);
+
+  return <Results query={deferredQuery} filter={deferredFilter} />;
+}`,
+    explanation:
+      "useDeferredValue uses Object.is to compare current and previous values. A freshly created object is a new reference every render, so it's always 'different'. This can trigger an infinite loop of background re-renders. Only pass primitive values (strings, numbers, booleans), or memoize the object first.",
+  },
+];
 
 export default function UseDeferredValuePage() {
   return (
@@ -97,6 +179,14 @@ export default function UseDeferredValuePage() {
           <PlaygroundConnectionFinder />
           <PlaygroundScheduleGuide />
         </section>
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <Separator />
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <CommonMistakes mistakes={USE_DEFERRED_VALUE_MISTAKES} />
       </ScrollReveal>
     </div>
   );

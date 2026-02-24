@@ -4,12 +4,110 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { CommonMistakes, type Mistake } from "@/components/common-mistakes";
 
 import { ImpatientContractor } from "./_components/impatient-contractor";
 import { MasterArchitect } from "./_components/master-architect";
 import { BlueprintLegend } from "./_components/blueprint-legend";
 import { PlaygroundFloorplan } from "./_components/playground-floorplan";
 import { PlaygroundWallSign } from "./_components/playground-wall-sign";
+
+const USE_LAYOUT_EFFECT_MISTAKES: Mistake[] = [
+  {
+    title: "Using useLayoutEffect when useEffect suffices",
+    subtitle: "Blocking the browser paint for non-DOM work like data fetching",
+    filename: "tooltip.tsx",
+    wrongCode: `function Dashboard() {
+  const [data, setData] = useState(null);
+
+  // Blocks paint for a network request — user sees a frozen screen
+  useLayoutEffect(() => {
+    fetch("/api/dashboard")
+      .then(res => res.json())
+      .then(d => setData(d));
+  }, []);
+
+  return <div>{data?.title}</div>;
+}`,
+    rightCode: `function Dashboard() {
+  const [data, setData] = useState(null);
+
+  // useEffect runs after paint — screen stays responsive
+  useEffect(() => {
+    fetch("/api/dashboard")
+      .then(res => res.json())
+      .then(d => setData(d));
+  }, []);
+
+  return <div>{data?.title}</div>;
+}`,
+    explanation:
+      "useLayoutEffect runs synchronously after DOM mutations but before the browser paints. This blocks the screen from updating. If your effect doesn't need to measure or mutate the DOM before paint, use useEffect instead — it runs after paint and keeps the UI responsive.",
+  },
+  {
+    title: "NOT using useLayoutEffect for DOM measurements",
+    subtitle: "Using useEffect for layout reads causes visible flickering",
+    filename: "tooltip.tsx",
+    wrongCode: `function Tooltip({ targetRef }) {
+  const [pos, setPos] = useState({ top: 0, left: 0 });
+
+  // useEffect runs AFTER paint — tooltip briefly appears at (0,0)
+  useEffect(() => {
+    const rect = targetRef.current.getBoundingClientRect();
+    setPos({ top: rect.bottom + 8, left: rect.left });
+  }, []);
+
+  return <div style={{ position: "absolute", ...pos }}>Tip</div>;
+}`,
+    rightCode: `function Tooltip({ targetRef }) {
+  const [pos, setPos] = useState({ top: 0, left: 0 });
+
+  // useLayoutEffect runs BEFORE paint — no flicker
+  useLayoutEffect(() => {
+    const rect = targetRef.current.getBoundingClientRect();
+    setPos({ top: rect.bottom + 8, left: rect.left });
+  }, []);
+
+  return <div style={{ position: "absolute", ...pos }}>Tip</div>;
+}`,
+    explanation:
+      "useEffect runs after the browser paints. If you measure an element and update state to reposition it, the user briefly sees it in the wrong position. useLayoutEffect fires before paint, so the measurement and repositioning happen invisibly.",
+  },
+  {
+    title: "useLayoutEffect in SSR without guard",
+    subtitle: "Using useLayoutEffect in server-rendered components causes warnings",
+    filename: "measure.tsx",
+    wrongCode: `import { useLayoutEffect, useState } from "react";
+
+// Triggers a warning on the server: useLayoutEffect does nothing in SSR
+function MeasuredBox({ children }) {
+  const [height, setHeight] = useState(0);
+
+  useLayoutEffect(() => {
+    // There is no DOM on the server — this is skipped entirely
+  }, []);
+
+  return <div>{children} (height: {height})</div>;
+}`,
+    rightCode: `import { useEffect, useLayoutEffect, useState } from "react";
+
+// Isomorphic hook — safe in SSR, uses useLayoutEffect on client
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
+function MeasuredBox({ children }) {
+  const [height, setHeight] = useState(0);
+
+  useIsomorphicLayoutEffect(() => {
+    // Runs as useLayoutEffect on client, useEffect on server
+  }, []);
+
+  return <div>{children} (height: {height})</div>;
+}`,
+    explanation:
+      "There is no DOM on the server, so useLayoutEffect cannot run during SSR. React emits a warning and skips the effect entirely. Use an isomorphic wrapper that falls back to useEffect on the server, or ensure the component only renders on the client.",
+  },
+];
 
 export default function UseLayoutEffectPage() {
   return (
@@ -90,6 +188,14 @@ export default function UseLayoutEffectPage() {
           <PlaygroundFloorplan />
           <PlaygroundWallSign />
         </section>
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <Separator />
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <CommonMistakes mistakes={USE_LAYOUT_EFFECT_MISTAKES} />
       </ScrollReveal>
     </div>
   );

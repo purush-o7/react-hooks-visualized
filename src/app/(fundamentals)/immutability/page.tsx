@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Copy, Flame, Layers, Database } from "lucide-react";
+import { CommonMistakes, type Mistake } from "@/components/common-mistakes";
 
 const topics = [
   {
@@ -45,6 +46,94 @@ export const metadata: Metadata = {
   description: "Value vs reference, why mutation breaks React, spread patterns, and immutable array operations",
 };
 
+const IMMUTABILITY_MISTAKES: Mistake[] = [
+  {
+    title: "Mutating arrays with push/splice",
+    subtitle: "Using push(), splice(), or sort() directly on state arrays",
+    filename: "list.tsx",
+    wrongCode: `function TodoList() {
+  const [items, setItems] = useState(["Buy milk"]);
+
+  function addItem(text) {
+    items.push(text);       // mutates the existing array!
+    setItems(items);        // same reference — React skips re-render
+  }
+
+  function removeFirst() {
+    items.splice(0, 1);    // mutates in place!
+    setItems(items);
+  }
+}`,
+    rightCode: `function TodoList() {
+  const [items, setItems] = useState(["Buy milk"]);
+
+  function addItem(text) {
+    setItems(prev => [...prev, text]);        // spread to add
+  }
+
+  function removeFirst() {
+    setItems(prev => prev.filter((_, i) => i !== 0)); // filter to remove
+  }
+}`,
+    explanation:
+      "Methods like push(), pop(), splice(), sort(), and reverse() mutate the original array. When you mutate a state array and call setState with the same reference, React's shallow comparison sees the same object and skips re-rendering. Always create a new array with spread, filter, or map.",
+  },
+  {
+    title: "Mutating objects directly",
+    subtitle: "Modifying a property on a state object instead of creating a new one",
+    filename: "profile.tsx",
+    wrongCode: `function Profile() {
+  const [user, setUser] = useState({ name: "Alice", age: 25 });
+
+  function handleBirthday() {
+    user.age += 1;    // mutates existing object
+    setUser(user);    // same reference — no re-render!
+  }
+}`,
+    rightCode: `function Profile() {
+  const [user, setUser] = useState({ name: "Alice", age: 25 });
+
+  function handleBirthday() {
+    setUser(prev => ({ ...prev, age: prev.age + 1 })); // new object
+  }
+}`,
+    explanation:
+      "Directly modifying a property on a state object changes the existing object without creating a new reference. React uses Object.is() to detect changes — same reference means no change detected, no re-render. Always create a new object with the spread operator.",
+  },
+  {
+    title: "Shallow copy pitfall with nested objects",
+    subtitle: "Spread only copies the top level — nested objects are still shared references",
+    filename: "settings.tsx",
+    wrongCode: `function Settings() {
+  const [user, setUser] = useState({
+    name: "Alice",
+    address: { city: "NYC", zip: "10001" },
+  });
+
+  function updateCity(city) {
+    const newUser = { ...user };
+    newUser.address.city = city; // MUTATES user.address too!
+    setUser(newUser);
+  }
+}`,
+    rightCode: `function Settings() {
+  const [user, setUser] = useState({
+    name: "Alice",
+    address: { city: "NYC", zip: "10001" },
+  });
+
+  function updateCity(city) {
+    setUser(prev => ({
+      ...prev,
+      address: { ...prev.address, city }, // spread at every level
+    }));
+  }
+}`,
+    explanation:
+      "The spread operator only creates a shallow copy. Top-level properties get new values, but nested objects are still shared references. Modifying a nested property on the 'copy' also modifies the original. Spread at every level of nesting, or use structuredClone() for deep copies.",
+  },
+];
+
 export default function ImmutabilityPage() {
   return (
     <div className="max-w-4xl">
@@ -80,6 +169,10 @@ export default function ImmutabilityPage() {
             </Card>
           </Link>
         ))}
+      </div>
+
+      <div className="mt-10">
+        <CommonMistakes mistakes={IMMUTABILITY_MISTAKES} />
       </div>
     </div>
   );

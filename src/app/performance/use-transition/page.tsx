@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { CommonMistakes, type Mistake } from "@/components/common-mistakes";
 
 import { OverwhelmedER } from "./_components/overwhelmed-er";
 import { TriageSystem } from "./_components/triage-system";
@@ -11,6 +12,116 @@ import { ERBriefing } from "./_components/er-briefing";
 import { PlaygroundPatientLookup } from "./_components/playground-patient-lookup";
 import { PlaygroundTriageGuide } from "./_components/playground-triage-guide";
 import { PlaygroundWardRounds } from "./_components/playground-ward-rounds";
+
+const USE_TRANSITION_MISTAKES: Mistake[] = [
+  {
+    title: "Wrapping all state updates in transitions",
+    subtitle: "Treating startTransition as a general-purpose performance tool",
+    filename: "search.tsx",
+    wrongCode: `function Search({ items }) {
+  const [query, setQuery] = useState("");
+  const [filtered, setFiltered] = useState(items);
+  const [isPending, startTransition] = useTransition();
+
+  const onChange = (e) => {
+    startTransition(() => {
+      setQuery(e.target.value);              // urgent — should NOT be here
+      setFiltered(expensiveFilter(items, e.target.value));
+    });
+  };
+
+  // Input feels laggy because the urgent update is deferred too
+  return <input value={query} onChange={onChange} />;
+}`,
+    rightCode: `function Search({ items }) {
+  const [query, setQuery] = useState("");
+  const [filtered, setFiltered] = useState(items);
+  const [isPending, startTransition] = useTransition();
+
+  const onChange = (e) => {
+    setQuery(e.target.value);                // urgent — updates immediately
+    startTransition(() => {
+      setFiltered(expensiveFilter(items, e.target.value)); // deferred
+    });
+  };
+
+  return <input value={query} onChange={onChange} />;
+}`,
+    explanation:
+      "useTransition causes two renders instead of one — first with isPending=true and old state, then with the new state. If the update was already fast, you've doubled the work. Only wrap genuinely expensive, non-urgent updates. Keep urgent updates (input values, button states) outside the transition.",
+  },
+  {
+    title: "Using transitions for network requests",
+    subtitle: "Wrapping fetch calls in startTransition expecting it to manage loading",
+    filename: "users.tsx",
+    wrongCode: `function UserList() {
+  const [users, setUsers] = useState([]);
+  const [isPending, startTransition] = useTransition();
+
+  const loadUsers = () => {
+    startTransition(() => {
+      fetch("/api/users")                // async — transition ends immediately
+        .then(res => res.json())
+        .then(data => setUsers(data));   // isPending already false
+    });
+  };
+
+  return <button>{isPending ? "Loading..." : "Load"}</button>;
+}`,
+    rightCode: `function UserList() {
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  const loadUsers = async () => {
+    setIsLoading(true);
+    const data = await fetch("/api/users").then(r => r.json());
+    setIsLoading(false);
+    startTransition(() => setUsers(data)); // only the render is deferred
+  };
+
+  return <button>{isLoading ? "Loading..." : "Load"}</button>;
+}`,
+    explanation:
+      "useTransition is for CPU-bound rendering work, not I/O. It doesn't 'wait' for promises. The transition completes immediately while the fetch is still in flight, so isPending flips back to false before data arrives. Use separate loading state for network requests.",
+  },
+  {
+    title: "Not showing pending UI feedback",
+    subtitle: "Using startTransition but ignoring the isPending boolean entirely",
+    filename: "tabs.tsx",
+    wrongCode: `function TabPanel() {
+  const [tab, setTab] = useState("home");
+  const [isPending, startTransition] = useTransition();
+
+  return (
+    <button onClick={() => startTransition(() => setTab("analytics"))}>
+      Analytics
+    </button>
+    // User sees nothing during the transition — feels broken
+  );
+}`,
+    rightCode: `function TabPanel() {
+  const [tab, setTab] = useState("home");
+  const [isPending, startTransition] = useTransition();
+
+  return (
+    <>
+      <button
+        onClick={() => startTransition(() => setTab("analytics"))}
+        disabled={isPending}
+      >
+        {isPending ? "Loading..." : "Analytics"}
+      </button>
+      <div style={{ opacity: isPending ? 0.7 : 1 }}>
+        {tab === "analytics" && <HeavyAnalytics />}
+      </div>
+    </>
+  );
+}`,
+    explanation:
+      "The whole point of a transition is to keep the UI responsive while showing the user that work is in progress. Without isPending feedback, the user clicks and sees nothing happen for hundreds of milliseconds, which feels broken. Always use isPending to display spinners, reduced opacity, or disabled states.",
+  },
+];
 
 export default function UseTransitionPage() {
   return (
@@ -96,6 +207,14 @@ export default function UseTransitionPage() {
           <PlaygroundWardRounds />
           <PlaygroundTriageGuide />
         </section>
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <Separator />
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <CommonMistakes mistakes={USE_TRANSITION_MISTAKES} />
       </ScrollReveal>
     </div>
   );

@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { CommonMistakes, type Mistake } from "@/components/common-mistakes";
 
 import { ChaoticGroundControl } from "./_components/chaotic-ground-control";
 import { FlightCommander } from "./_components/flight-commander";
@@ -11,6 +12,92 @@ import { MissionBriefing } from "./_components/mission-briefing";
 import { PlaygroundMissionChecklist } from "./_components/playground-mission-checklist";
 import { PlaygroundCargoBay } from "./_components/playground-cargo-bay";
 import { PlaygroundLaunchSequence } from "./_components/playground-launch-sequence";
+
+const USE_REDUCER_MISTAKES: Mistake[] = [
+  {
+    title: "Mutating state inside the reducer",
+    subtitle: "Modifying the existing state object instead of returning a new one",
+    filename: "reducer.ts",
+    wrongCode: `function reducer(state, action) {
+  switch (action.type) {
+    case "toggle_fuel":
+      state.fuel = !state.fuel; // mutating existing state!
+      return state;             // same reference — React won't re-render
+    default:
+      return state;
+  }
+}`,
+    rightCode: `function reducer(state, action) {
+  switch (action.type) {
+    case "toggle_fuel":
+      return { ...state, fuel: !state.fuel }; // new object
+    default:
+      return state;
+  }
+}`,
+    explanation:
+      "Reducers must be pure functions — they should never modify the existing state object. React compares the returned value by reference. If you mutate and return the same object, React sees no change and skips the re-render.",
+  },
+  {
+    title: "Forgetting to spread the rest of state",
+    subtitle: "Returning only the changed fields from the reducer",
+    filename: "reducer.ts",
+    wrongCode: `function reducer(state, action) {
+  switch (action.type) {
+    case "set_fuel":
+      return { fuel: action.value }; // oxygen, comms, etc. are lost!
+    default:
+      return state;
+  }
+}`,
+    rightCode: `function reducer(state, action) {
+  switch (action.type) {
+    case "set_fuel":
+      return { ...state, fuel: action.value }; // preserves all fields
+    default:
+      return state;
+  }
+}`,
+    explanation:
+      "Unlike useState's setter, useReducer replaces the entire state with whatever you return. If you only return the changed field, every other field is silently dropped. Always spread the previous state and override only what changed.",
+  },
+  {
+    title: "Side effects inside the reducer",
+    subtitle: "Calling APIs, logging, or dispatching inside the reducer function",
+    filename: "reducer.ts",
+    wrongCode: `function reducer(state, action) {
+  switch (action.type) {
+    case "launch":
+      fetch("/api/launch", { method: "POST" }); // side effect!
+      console.log("Launching...");               // side effect!
+      return { ...state, launched: true };
+    default:
+      return state;
+  }
+}`,
+    rightCode: `// Reducer stays pure
+function reducer(state, action) {
+  switch (action.type) {
+    case "launch":
+      return { ...state, launched: true };
+    default:
+      return state;
+  }
+}
+
+// Side effects go in the event handler or useEffect
+function LaunchControl() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  async function handleLaunch() {
+    dispatch({ type: "launch" });
+    await fetch("/api/launch", { method: "POST" });
+  }
+}`,
+    explanation:
+      "Reducers must be pure — same input, same output, no side effects. React may call your reducer more than once (e.g., in Strict Mode). API calls, logging, and other side effects belong in event handlers or useEffect, not inside the reducer.",
+  },
+];
 
 export default function UseReducerPage() {
   return (
@@ -98,6 +185,14 @@ export default function UseReducerPage() {
           <PlaygroundCargoBay />
           <PlaygroundLaunchSequence />
         </section>
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <Separator />
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <CommonMistakes mistakes={USE_REDUCER_MISTAKES} />
       </ScrollReveal>
     </div>
   );

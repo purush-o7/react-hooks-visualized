@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { CommonMistakes, type Mistake } from "@/components/common-mistakes";
 
 import { UnlockedVault } from "./_components/unlocked-vault";
 import { TellerWindow } from "./_components/teller-window";
@@ -11,6 +12,93 @@ import { VaultBriefing } from "./_components/vault-briefing";
 import { PlaygroundSafeDeposit } from "./_components/playground-safe-deposit";
 import { PlaygroundLoanApplication } from "./_components/playground-loan-application";
 import { PlaygroundSecurityGuide } from "./_components/playground-security-guide";
+
+const USE_IMPERATIVE_HANDLE_MISTAKES: Mistake[] = [
+  {
+    title: "Using imperative handles when props would work",
+    subtitle: "Reaching for ref.current.open() when a simple isOpen prop suffices",
+    filename: "modal.tsx",
+    wrongCode: `const Modal = forwardRef((props, ref) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  useImperativeHandle(ref, () => ({
+    open: () => setIsOpen(true),
+    close: () => setIsOpen(false),
+  }));
+
+  if (!isOpen) return null;
+  return <div className="modal">{props.children}</div>;
+});
+// Parent: ref.current.open() — imperative and unnecessary`,
+    rightCode: `function Modal({ isOpen, onClose, children }) {
+  if (!isOpen) return null;
+  return (
+    <div className="modal">
+      {children}
+      <button onClick={onClose}>Close</button>
+    </div>
+  );
+}
+// Parent: <Modal isOpen={show} onClose={() => setShow(false)} />`,
+    explanation:
+      "This bypasses React's declarative model. If the behavior can be expressed as a prop (like isOpen), use a prop. Reserve useImperativeHandle for truly imperative operations: focusing, scrolling, or triggering animations that cannot be modeled declaratively.",
+  },
+  {
+    title: "Exposing too many internal details",
+    subtitle: "Leaking the entire internal state and setters through the handle",
+    filename: "form-input.tsx",
+    wrongCode: `const FormInput = forwardRef((props, ref) => {
+  const [value, setValue] = useState("");
+  const [error, setError] = useState("");
+  const [touched, setTouched] = useState(false);
+
+  useImperativeHandle(ref, () => ({
+    value, error, touched,    // leaking raw state
+    setValue, setError,        // leaking setters
+    validate, clear, reset,
+  }), [value, error, touched]);
+});`,
+    rightCode: `const FormInput = forwardRef((props, ref) => {
+  const [value, setValue] = useState("");
+  const [error, setError] = useState("");
+
+  useImperativeHandle(ref, () => ({
+    validate: () => { /* sets error internally */ },
+    clear: () => { setValue(""); setError(""); },
+    getError: () => error,
+  }), [error]);
+});`,
+    explanation:
+      "Exposing internal state and setters tightly couples the parent to the child's implementation. If you rename a field or restructure state, every parent breaks. Keep the exposed API minimal — only the methods the parent genuinely needs.",
+  },
+  {
+    title: "Forgetting the dependency array",
+    subtitle: "Omitting the third argument causes the handle to recreate every render",
+    filename: "fancy-input.tsx",
+    wrongCode: `const FancyInput = forwardRef((props, ref) => {
+  const inputRef = useRef(null);
+
+  useImperativeHandle(ref, () => ({
+    focus: () => inputRef.current?.focus(),
+    scrollIntoView: () => inputRef.current?.scrollIntoView(),
+  })); // no dependency array — recreates every render
+
+  return <input ref={inputRef} />;
+});`,
+    rightCode: `const FancyInput = forwardRef((props, ref) => {
+  const inputRef = useRef(null);
+
+  useImperativeHandle(ref, () => ({
+    focus: () => inputRef.current?.focus(),
+    scrollIntoView: () => inputRef.current?.scrollIntoView(),
+  }), []); // stable handle, methods read ref at call time
+
+  return <input ref={inputRef} />;
+});`,
+    explanation:
+      "Without a dependency array, React recreates the handle object on every render, creating new function references each time. Always provide a dependency array listing only the values the exposed methods depend on.",
+  },
+];
 
 export default function UseImperativeHandlePage() {
   return (
@@ -105,6 +193,14 @@ export default function UseImperativeHandlePage() {
           <PlaygroundLoanApplication />
           <PlaygroundSecurityGuide />
         </section>
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <Separator />
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <CommonMistakes mistakes={USE_IMPERATIVE_HANDLE_MISTAKES} />
       </ScrollReveal>
     </div>
   );

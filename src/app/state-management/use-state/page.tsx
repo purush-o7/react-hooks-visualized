@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { CommonMistakes, type Mistake } from "@/components/common-mistakes";
 
 import { DeadSwitchboard } from "./_components/dead-switchboard";
 import { LiveSwitchboard } from "./_components/live-switchboard";
@@ -12,6 +13,86 @@ import { PlaygroundLineToggle } from "./_components/playground-line-toggle";
 import { PlaygroundFrequencyTuner } from "./_components/playground-frequency-tuner";
 import { PlaygroundCallRouter } from "./_components/playground-call-router";
 import { PlaygroundLazyInit } from "./_components/playground-lazy-init";
+
+const USE_STATE_MISTAKES: Mistake[] = [
+  {
+    title: "Mutating state directly",
+    subtitle: "Editing the state object in place without calling the setter",
+    filename: "counter.tsx",
+    wrongCode: `function Profile() {
+  const [user, setUser] = useState({ name: "Alice", score: 0 });
+
+  function handleClick() {
+    user.score += 1;      // mutating the existing object
+    setUser(user);        // same reference — React bails out
+  }
+
+  return <button onClick={handleClick}>{user.score}</button>;
+}`,
+    rightCode: `function Profile() {
+  const [user, setUser] = useState({ name: "Alice", score: 0 });
+
+  function handleClick() {
+    setUser({ ...user, score: user.score + 1 }); // new object
+  }
+
+  return <button onClick={handleClick}>{user.score}</button>;
+}`,
+    explanation:
+      "React uses Object.is() to compare previous and next state. If you mutate the existing object and pass it back, the reference is identical so React skips the re-render entirely. Always produce a new object via spread or array methods.",
+  },
+  {
+    title: "Stale state in batched updates",
+    subtitle: "Multiple setState calls reading the same stale snapshot",
+    filename: "counter.tsx",
+    wrongCode: `function Counter() {
+  const [count, setCount] = useState(0);
+
+  function handleTripleClick() {
+    setCount(count + 1); // all three read the same count
+    setCount(count + 1);
+    setCount(count + 1); // result: 1, not 3
+  }
+
+  return <button onClick={handleTripleClick}>{count}</button>;
+}`,
+    rightCode: `function Counter() {
+  const [count, setCount] = useState(0);
+
+  function handleTripleClick() {
+    setCount(c => c + 1); // each reads the latest queued value
+    setCount(c => c + 1);
+    setCount(c => c + 1); // result: 3
+  }
+
+  return <button onClick={handleTripleClick}>{count}</button>;
+}`,
+    explanation:
+      "When you call the setter multiple times in the same event handler, each call captures the same state snapshot from that render. Use the functional updater form setState(prev => prev + 1) so each call receives the latest queued value.",
+  },
+  {
+    title: "Expensive initializer runs every render",
+    subtitle: "Passing an expression instead of a function to useState",
+    filename: "list.tsx",
+    wrongCode: `function SortedList({ items }) {
+  // items.sort() runs on EVERY render
+  // even though React ignores the result after mount
+  const [sorted, setSorted] = useState(items.slice().sort());
+
+  return <ul>{sorted.map(i => <li key={i}>{i}</li>)}</ul>;
+}`,
+    rightCode: `function SortedList({ items }) {
+  // Arrow function — expensive work only runs once on mount
+  const [sorted, setSorted] = useState(
+    () => items.slice().sort()
+  );
+
+  return <ul>{sorted.map(i => <li key={i}>{i}</li>)}</ul>;
+}`,
+    explanation:
+      "The initial value argument to useState is evaluated on every render, but React only uses it once — on mount. If you pass an expensive expression like items.sort(), it still runs every time. Wrap it in an arrow function to defer execution to mount only.",
+  },
+];
 
 export default function UseStatePage() {
   return (
@@ -106,6 +187,14 @@ export default function UseStatePage() {
           <PlaygroundCallRouter />
           <PlaygroundLazyInit />
         </section>
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <Separator />
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <CommonMistakes mistakes={USE_STATE_MISTAKES} />
       </ScrollReveal>
     </div>
   );

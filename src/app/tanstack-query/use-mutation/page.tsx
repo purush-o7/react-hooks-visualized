@@ -4,12 +4,100 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { CommonMistakes, type Mistake } from "@/components/common-mistakes";
 
 import { ManualPost } from "./_components/manual-post";
 import { MutationPost } from "./_components/mutation-post";
 import { BeforeAfter } from "./_components/before-after";
 import { PlaygroundCrud } from "./_components/playground-crud";
 import { PlaygroundOptimistic } from "./_components/playground-optimistic";
+
+const USE_MUTATION_MISTAKES: Mistake[] = [
+  {
+    title: "Not invalidating queries after mutation",
+    subtitle: "Mutation succeeds but the UI still shows stale cached data",
+    filename: "todo-form.tsx",
+    wrongCode: `const mutation = useMutation({
+  mutationFn: (newTodo) => axios.post("/todos", newTodo),
+  // Nothing happens after success — cache is stale!
+});
+
+function handleSubmit(data) {
+  mutation.mutate(data);
+  // List still shows old data until manual refresh
+}`,
+    rightCode: `const queryClient = useQueryClient();
+
+const mutation = useMutation({
+  mutationFn: (newTodo) => axios.post("/todos", newTodo),
+  onSettled: async () => {
+    // Invalidate and refetch the todos list
+    await queryClient.invalidateQueries({ queryKey: ["todos"] });
+  },
+});`,
+    explanation:
+      "Mutations change server state, but the query cache doesn't know about it unless you tell it. Without invalidation, users see old data until a background refetch happens. Always invalidate related queries in onSuccess or onSettled after a mutation.",
+  },
+  {
+    title: "Incomplete optimistic updates",
+    subtitle: "Updating the cache optimistically but forgetting rollback on error",
+    filename: "todo-form.tsx",
+    wrongCode: `const mutation = useMutation({
+  mutationFn: updateTodo,
+  onMutate: async (newTodo) => {
+    // Missing: cancelQueries, snapshot, context return
+    queryClient.setQueryData(["todos"], (old) => {
+      old.push(newTodo); // mutates in place!
+      return old;        // same reference — React won't re-render
+    });
+  },
+  // Missing: onError rollback
+  // Missing: onSettled invalidation
+});`,
+    rightCode: `const mutation = useMutation({
+  mutationFn: updateTodo,
+  onMutate: async (newTodo) => {
+    await queryClient.cancelQueries({ queryKey: ["todos"] });
+    const previous = queryClient.getQueryData(["todos"]);
+    queryClient.setQueryData(["todos"], (old) => [...old, newTodo]);
+    return { previous }; // context for rollback
+  },
+  onError: (_err, _todo, context) => {
+    queryClient.setQueryData(["todos"], context.previous); // rollback
+  },
+  onSettled: () => {
+    queryClient.invalidateQueries({ queryKey: ["todos"] }); // sync
+  },
+});`,
+    explanation:
+      "A proper optimistic update has 4 steps: cancel outgoing refetches, snapshot previous data, update immutably, and return the snapshot as context. On error, roll back to the snapshot. On settled, always invalidate to ensure server/client sync. Skipping any step creates race conditions or broken UI.",
+  },
+  {
+    title: "Not returning the promise from mutationFn",
+    subtitle: "Forgetting to return the API call so onSuccess fires too early",
+    filename: "api.tsx",
+    wrongCode: `const mutation = useMutation({
+  mutationFn: (id) => {
+    axios.delete(\`/todos/\${id}\`); // missing return!
+  },
+  onSuccess: () => {
+    // Fires IMMEDIATELY — server hasn't deleted yet
+    queryClient.invalidateQueries({ queryKey: ["todos"] });
+  },
+});`,
+    rightCode: `const mutation = useMutation({
+  mutationFn: (id) => {
+    return axios.delete(\`/todos/\${id}\`); // promise returned
+  },
+  onSuccess: () => {
+    // Fires after server confirms deletion
+    queryClient.invalidateQueries({ queryKey: ["todos"] });
+  },
+});`,
+    explanation:
+      "If mutationFn doesn't return the promise, TanStack Query treats it as synchronously resolved. onSuccess fires immediately, invalidation triggers, and the refetch returns old data because the server hasn't processed the request yet. Always return (or use arrow shorthand) the API call.",
+  },
+];
 
 export default function UseMutationPage() {
   return (
@@ -78,6 +166,14 @@ export default function UseMutationPage() {
           <PlaygroundCrud />
           <PlaygroundOptimistic />
         </section>
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <Separator />
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <CommonMistakes mistakes={USE_MUTATION_MISTAKES} />
       </ScrollReveal>
     </div>
   );

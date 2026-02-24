@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { CommonMistakes, type Mistake } from "@/components/common-mistakes";
 
 import { ManualFetch } from "./_components/manual-fetch";
 import { QueryFetch } from "./_components/query-fetch";
@@ -12,6 +13,98 @@ import { PlaygroundPosts } from "./_components/playground-posts";
 import { PlaygroundUserSelector } from "./_components/playground-user-selector";
 import { PlaygroundPolling } from "./_components/playground-polling";
 import { PlaygroundPagination } from "./_components/playground-pagination";
+
+const USE_QUERY_MISTAKES: Mistake[] = [
+  {
+    title: "Syncing query data to local state",
+    subtitle: "Copying data from useQuery into useState via useEffect",
+    filename: "profile.tsx",
+    wrongCode: `function UserProfile({ userId }) {
+  const { data } = useQuery({
+    queryKey: ["user", userId],
+    queryFn: () => fetchUser(userId),
+  });
+  const [user, setUser] = useState(null);
+
+  // Shadow copy — goes stale on background refetch!
+  useEffect(() => {
+    if (data) setUser(data);
+  }, [data]);
+
+  return <div>{user?.name}</div>;
+}`,
+    rightCode: `function UserProfile({ userId }) {
+  const { data: user } = useQuery({
+    queryKey: ["user", userId],
+    queryFn: () => fetchUser(userId),
+    select: (data) => ({
+      ...data,
+      fullName: \`\${data.first} \${data.last}\`,
+    }),
+  });
+
+  return <div>{user?.fullName}</div>;
+}`,
+    explanation:
+      "You now have two sources of truth. The local state freezes while the query cache gets updated by background refetches. Use the data from useQuery directly. If you need a derived value, use the select option or useMemo — never copy to useState.",
+  },
+  {
+    title: "Inconsistent or scattered query keys",
+    subtitle: "Different components using different key shapes for the same resource",
+    filename: "queries.ts",
+    wrongCode: `// In ComponentA:
+useQuery({ queryKey: ["user", id], queryFn: () => fetchUser(id) });
+
+// In ComponentB (typo!):
+useQuery({ queryKey: ["users", id], queryFn: () => fetchUser(id) });
+
+// Invalidation misses ComponentA:
+queryClient.invalidateQueries({ queryKey: ["users"] });`,
+    rightCode: `// userQueries.ts — single source of truth
+export const userQueries = {
+  all: () => ({ queryKey: ["users"] }),
+  detail: (id) => ({
+    queryKey: ["users", id],
+    queryFn: () => fetchUser(id),
+  }),
+};
+
+// In any component:
+useQuery(userQueries.detail(userId));
+
+// Invalidate everything user-related:
+queryClient.invalidateQueries(userQueries.all());`,
+    explanation:
+      "TanStack Query uses query keys as cache identifiers. Inconsistent keys create duplicate cache entries, cause misses on prefetched data, and make invalidation unreliable. Centralize your keys in a query key factory so every component references the same structure.",
+  },
+  {
+    title: "Not handling loading and error states",
+    subtitle: "Accessing data without guarding for pending or error states",
+    filename: "todos.tsx",
+    wrongCode: `function Todos() {
+  const { data } = useQuery({
+    queryKey: ["todos"],
+    queryFn: fetchTodos,
+  });
+
+  // Crashes on first render: data is undefined
+  return <ul>{data.map(t => <li key={t.id}>{t.title}</li>)}</ul>;
+}`,
+    rightCode: `function Todos() {
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ["todos"],
+    queryFn: fetchTodos,
+  });
+
+  if (isPending) return <Spinner />;
+  if (isError) return <ErrorMessage error={error} />;
+
+  return <ul>{data.map(t => <li key={t.id}>{t.title}</li>)}</ul>;
+}`,
+    explanation:
+      "useQuery returns a state machine. On the first render, data is undefined and isPending is true. Accessing data.map without guarding causes a runtime crash. Always check isPending first, then isError, then render with data.",
+  },
+];
 
 export default function UseQueryPage() {
   return (
@@ -82,6 +175,14 @@ export default function UseQueryPage() {
           <PlaygroundPolling />
           <PlaygroundPagination />
         </section>
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <Separator />
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <CommonMistakes mistakes={USE_QUERY_MISTAKES} />
       </ScrollReveal>
     </div>
   );

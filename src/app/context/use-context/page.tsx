@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { CommonMistakes, type Mistake } from "@/components/common-mistakes";
 
 import { CourierChain } from "./_components/courier-chain";
 import { EncryptedChannel } from "./_components/encrypted-channel";
@@ -11,6 +12,112 @@ import { SpyPlaybook } from "./_components/spy-playbook";
 import { PlaygroundSafeHouse } from "./_components/playground-safe-house";
 import { PlaygroundAgentDossier } from "./_components/playground-agent-dossier";
 import { PlaygroundCodeLanguage } from "./_components/playground-code-language";
+
+const USE_CONTEXT_MISTAKES: Mistake[] = [
+  {
+    title: "Unmemoized provider value",
+    subtitle: "Passing a new object literal as the context value on every render",
+    filename: "spy-provider.tsx",
+    wrongCode: `function SpyNetworkProvider({ children }) {
+  const [agents, setAgents] = useState([]);
+
+  // New object on every render — ALL consumers re-render
+  return (
+    <SpyContext.Provider value={{ agents, setAgents }}>
+      {children}
+    </SpyContext.Provider>
+  );
+}`,
+    rightCode: `function SpyNetworkProvider({ children }) {
+  const [agents, setAgents] = useState([]);
+
+  const value = useMemo(
+    () => ({ agents, setAgents }),
+    [agents]
+  );
+
+  return (
+    <SpyContext.Provider value={value}>
+      {children}
+    </SpyContext.Provider>
+  );
+}`,
+    explanation:
+      "Context uses reference equality to detect changes. If you pass a new object literal as the value, every consumer re-renders on every provider re-render — even if the data inside hasn't changed. Wrap the value in useMemo so the reference only changes when the actual data changes.",
+  },
+  {
+    title: "One giant context for everything",
+    subtitle: "Putting all app state in a single context provider",
+    filename: "app-context.tsx",
+    wrongCode: `// Every consumer re-renders when ANY field changes
+const AppContext = createContext(null);
+
+function AppProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [theme, setTheme] = useState("dark");
+  const [notifications, setNotifications] = useState([]);
+
+  return (
+    <AppContext.Provider value={{
+      user, setUser, theme, setTheme, notifications, setNotifications
+    }}>
+      {children}
+    </AppContext.Provider>
+  );
+}`,
+    rightCode: `// Split into focused contexts
+const UserContext = createContext(null);
+const ThemeContext = createContext(null);
+const NotificationContext = createContext(null);
+
+function AppProviders({ children }) {
+  return (
+    <UserProvider>
+      <ThemeProvider>
+        <NotificationProvider>
+          {children}
+        </NotificationProvider>
+      </ThemeProvider>
+    </UserProvider>
+  );
+}`,
+    explanation:
+      "When everything lives in one context, a change to any field triggers a re-render in every consumer — even components that only need the theme will re-render when notifications update. Split your context into focused providers so consumers only subscribe to the data they actually use.",
+  },
+  {
+    title: "Using context without a provider",
+    subtitle: "Consuming a context that has no provider above it in the tree",
+    filename: "agent.tsx",
+    wrongCode: `const SpyContext = createContext(undefined);
+
+function AgentCard() {
+  // No SpyProvider above this component — gets undefined
+  const ctx = useContext(SpyContext);
+  return <div>{ctx.agentName}</div>; // TypeError!
+}
+
+// Rendered without wrapping in a provider
+function App() {
+  return <AgentCard />;
+}`,
+    rightCode: `const SpyContext = createContext(undefined);
+
+function useSpyContext() {
+  const ctx = useContext(SpyContext);
+  if (ctx === undefined) {
+    throw new Error("useSpyContext must be used within a SpyProvider");
+  }
+  return ctx;
+}
+
+function AgentCard() {
+  const { agentName } = useSpyContext(); // clear error if missing
+  return <div>{agentName}</div>;
+}`,
+    explanation:
+      "If no provider exists above the consumer in the component tree, useContext returns the default value passed to createContext (often undefined or null). This usually leads to a silent bug or a runtime crash. Create a custom hook that throws a descriptive error when the provider is missing.",
+  },
+];
 
 export default function UseContextPage() {
   return (
@@ -98,6 +205,14 @@ export default function UseContextPage() {
           <PlaygroundAgentDossier />
           <PlaygroundCodeLanguage />
         </section>
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <Separator />
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <CommonMistakes mistakes={USE_CONTEXT_MISTAKES} />
       </ScrollReveal>
     </div>
   );
