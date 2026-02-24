@@ -1,17 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Outfit, JetBrains_Mono } from "next/font/google";
 import Providers from "./providers";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { BreadcrumbNav } from "@/components/breadcrumb-nav";
+import { TopicNav } from "@/components/topic-nav";
+import { TableOfContents } from "@/components/table-of-contents";
+import { PageTransition } from "@/components/page-transition";
+import { KeyboardProvider } from "@/components/keyboard-provider";
 import "./globals.css";
 
-const geistSans = Geist({
+const outfit = Outfit({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
+const jetbrainsMono = JetBrains_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
@@ -28,24 +34,31 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${outfit.variable} ${jetbrainsMono.variable} antialiased`}
       >
         <Providers>
           <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
-              <header className="flex h-12 shrink-0 items-center gap-2 border-b px-4">
-                <SidebarTrigger className="-ml-1" />
-                <Separator orientation="vertical" className="mr-2 !h-4" />
-                <span className="text-sm font-medium text-muted-foreground">
-                  Learn React Hooks
-                </span>
-              </header>
-              <main className="flex-1 overflow-y-auto p-6 lg:p-10">
-                {children}
-              </main>
+              <KeyboardProvider>
+                <header className="sticky top-0 z-10 flex h-12 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur-sm px-4">
+                  <SidebarTrigger className="-ml-1" />
+                  <Separator orientation="vertical" className="mr-2 !h-4" />
+                  <BreadcrumbNav />
+                  <div className="ml-auto">
+                    <ThemeToggle />
+                  </div>
+                </header>
+                <main className="flex-1 overflow-y-auto p-6 lg:p-10">
+                  <PageTransition>
+                    {children}
+                  </PageTransition>
+                  <TopicNav />
+                  <TableOfContents />
+                </main>
+              </KeyboardProvider>
             </SidebarInset>
           </SidebarProvider>
         </Providers>

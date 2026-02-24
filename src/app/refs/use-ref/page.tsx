@@ -3,13 +3,14 @@
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
-import { NoisyRememberer } from "./_components/noisy-rememberer";
-import { SilentRememberer } from "./_components/silent-rememberer";
-import { BeforeAfter } from "./_components/before-after";
-import { PlaygroundFocus } from "./_components/playground-focus";
-import { PlaygroundStopwatch } from "./_components/playground-stopwatch";
-import { PlaygroundRenderCounter } from "./_components/playground-render-counter";
+import { LoudShutter } from "./_components/loud-shutter";
+import { SilentLens } from "./_components/silent-lens";
+import { StudioBriefing } from "./_components/studio-briefing";
+import { PlaygroundSubjectFocus } from "./_components/playground-subject-focus";
+import { PlaygroundShotCounter } from "./_components/playground-shot-counter";
+import { PlaygroundExposureTimer } from "./_components/playground-exposure-timer";
 
 export default function UseRefPage() {
   return (
@@ -25,53 +26,69 @@ export default function UseRefPage() {
           per="word"
           className="text-muted-foreground"
         >
-          What if you need to remember something without re-rendering?
+          The silent lens that remembers every setting without firing the
+          shutter.
         </TextEffect>
       </div>
 
-      {/* Section 1: The Problem */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Noisy Way</h2>
-        <p className="text-muted-foreground">
-          useState remembers values, but it also re-renders the entire
-          component every time. Sometimes that&apos;s too much.
-        </p>
-        <NoisyRememberer />
-      </section>
-
-      <Separator />
-
-      {/* Section 2: The Solution */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Fix: useRef</h2>
-        <p className="text-muted-foreground">
-          useRef gives you a mutable box that persists across renders — but
-          changing it never triggers a re-render.
-        </p>
-        <SilentRememberer />
-      </section>
-
-      <section className="space-y-4">
-        <h2 className="text-xl font-bold">Before vs After</h2>
-        <BeforeAfter />
-      </section>
-
-      <Separator />
-
-      {/* Section 3: Playground */}
-      <section className="space-y-6">
-        <div>
-          <h2 className="text-2xl font-bold mb-2">Playground</h2>
+      {/* Section 1: The Problem — Loud Shutter */}
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Loud Shutter</h2>
           <p className="text-muted-foreground">
-            useRef has two superpowers: accessing DOM elements directly and
-            storing mutable values silently. Try these examples.
+            useState remembers values — but every change fires the shutter and
+            disturbs the entire gallery. Sometimes that&apos;s way too loud.
           </p>
-        </div>
+          <LoudShutter />
+        </section>
+      </ScrollReveal>
 
-        <PlaygroundFocus />
-        <PlaygroundStopwatch />
-        <PlaygroundRenderCounter />
-      </section>
+      <ScrollReveal>
+        <Separator />
+      </ScrollReveal>
+
+      {/* Section 2: The Solution — Silent Lens */}
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Silent Lens</h2>
+          <p className="text-muted-foreground">
+            useRef is the photographer&apos;s silent lens — it adjusts settings
+            and remembers values without ever firing the shutter or disturbing
+            the gallery.
+          </p>
+          <SilentLens />
+        </section>
+      </ScrollReveal>
+
+      {/* Section 3: Studio Briefing */}
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-xl font-bold">Studio Briefing</h2>
+          <StudioBriefing />
+        </section>
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <Separator />
+      </ScrollReveal>
+
+      {/* Section 4: Playgrounds */}
+      <ScrollReveal>
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-2xl font-bold mb-2">Playground</h2>
+            <p className="text-muted-foreground">
+              useRef has two superpowers: pointing the lens at DOM elements
+              directly, and storing mutable values silently between shots. Try
+              these examples.
+            </p>
+          </div>
+
+          <PlaygroundSubjectFocus />
+          <PlaygroundShotCounter />
+          <PlaygroundExposureTimer />
+        </section>
+      </ScrollReveal>
     </div>
   );
 }

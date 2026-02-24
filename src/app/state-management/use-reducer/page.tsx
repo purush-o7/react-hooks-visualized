@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
 import { ChaoticGroundControl } from "./_components/chaotic-ground-control";
 import { FlightCommander } from "./_components/flight-commander";
@@ -31,49 +32,57 @@ export default function UseReducerPage() {
       </div>
 
       {/* Section 1: Chaotic Ground Control */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">Chaotic Ground Control</h2>
-        <p className="text-muted-foreground">
-          5 systems, 5 operators, 5 separate radios — and a reset that requires
-          calling every single station.
-        </p>
-        <ChaoticGroundControl />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">Chaotic Ground Control</h2>
+          <p className="text-muted-foreground">
+            5 systems, 5 operators, 5 separate radios — and a reset that requires
+            calling every single station.
+          </p>
+          <ChaoticGroundControl />
+        </section>
+      </ScrollReveal>
 
-      <Separator />
+      <ScrollReveal><Separator /></ScrollReveal>
 
       {/* Section 2: The Flight Commander */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Flight Commander</h2>
-        <p className="text-muted-foreground">
-          Same ship, but all commands go through one Flight Computer. Dispatch a
-          command, and the reducer computes the new ship state.
-        </p>
-        <FlightCommander />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Flight Commander</h2>
+          <p className="text-muted-foreground">
+            Same ship, but all commands go through one Flight Computer. Dispatch a
+            command, and the reducer computes the new ship state.
+          </p>
+          <FlightCommander />
+        </section>
+      </ScrollReveal>
 
       {/* Section 3: Mission Briefing */}
-      <section className="space-y-4">
-        <h2 className="text-xl font-bold">Mission Briefing</h2>
-        <MissionBriefing />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-xl font-bold">Mission Briefing</h2>
+          <MissionBriefing />
+        </section>
+      </ScrollReveal>
 
-      <Separator />
+      <ScrollReveal><Separator /></ScrollReveal>
 
       {/* Section 4: Mission Operations */}
-      <section className="space-y-6">
-        <div>
-          <h2 className="text-2xl font-bold mb-2">Mission Operations</h2>
-          <p className="text-muted-foreground">
-            useReducer shines with complex state — mission checklists, cargo
-            manifests, and launch sequences. Run these operations.
-          </p>
-        </div>
+      <ScrollReveal>
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-2xl font-bold mb-2">Mission Operations</h2>
+            <p className="text-muted-foreground">
+              useReducer shines with complex state — mission checklists, cargo
+              manifests, and launch sequences. Run these operations.
+            </p>
+          </div>
 
-        <PlaygroundMissionChecklist />
-        <PlaygroundCargoBay />
-        <PlaygroundLaunchSequence />
-      </section>
+          <PlaygroundMissionChecklist />
+          <PlaygroundCargoBay />
+          <PlaygroundLaunchSequence />
+        </section>
+      </ScrollReveal>
     </div>
   );
 }

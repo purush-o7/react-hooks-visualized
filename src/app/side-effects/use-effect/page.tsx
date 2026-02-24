@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
 import { BrokenDJ } from "./_components/broken-dj";
 import { FixedDJ } from "./_components/fixed-dj";
@@ -31,50 +32,58 @@ export default function UseEffectPage() {
       </div>
 
       {/* Section 1: The Chaotic DJ */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Chaotic DJ</h2>
-        <p className="text-muted-foreground">
-          What happens when you drop a beat directly in the component body?
-          Every render starts a new track without stopping the old one — pure
-          noise.
-        </p>
-        <BrokenDJ />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Chaotic DJ</h2>
+          <p className="text-muted-foreground">
+            What happens when you drop a beat directly in the component body?
+            Every render starts a new track without stopping the old one — pure
+            noise.
+          </p>
+          <BrokenDJ />
+        </section>
+      </ScrollReveal>
 
-      <Separator />
+      <ScrollReveal><Separator /></ScrollReveal>
 
       {/* Section 2: The Pro DJ */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Pro DJ: useEffect</h2>
-        <p className="text-muted-foreground">
-          useEffect runs your code AFTER render, and the cleanup function stops
-          the old beat before the next one plays. One clean track at a time.
-        </p>
-        <FixedDJ />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Pro DJ: useEffect</h2>
+          <p className="text-muted-foreground">
+            useEffect runs your code AFTER render, and the cleanup function stops
+            the old beat before the next one plays. One clean track at a time.
+          </p>
+          <FixedDJ />
+        </section>
+      </ScrollReveal>
 
       {/* Section 3: The Mixing Board */}
-      <section className="space-y-4">
-        <h2 className="text-xl font-bold">The Mixing Board</h2>
-        <DependencyGuideDJ />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-xl font-bold">The Mixing Board</h2>
+          <DependencyGuideDJ />
+        </section>
+      </ScrollReveal>
 
-      <Separator />
+      <ScrollReveal><Separator /></ScrollReveal>
 
       {/* Section 4: Playground */}
-      <section className="space-y-6">
-        <div>
-          <h2 className="text-2xl font-bold mb-2">Playground</h2>
-          <p className="text-muted-foreground">
-            useEffect connects React to the outside world — the browser tab,
-            intervals, event listeners, and more. Spin these decks.
-          </p>
-        </div>
+      <ScrollReveal>
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-2xl font-bold mb-2">Playground</h2>
+            <p className="text-muted-foreground">
+              useEffect connects React to the outside world — the browser tab,
+              intervals, event listeners, and more. Spin these decks.
+            </p>
+          </div>
 
-        <PlaygroundNowPlaying />
-        <PlaygroundBeatLoop />
-        <PlaygroundKeyboardShortcuts />
-      </section>
+          <PlaygroundNowPlaying />
+          <PlaygroundBeatLoop />
+          <PlaygroundKeyboardShortcuts />
+        </section>
+      </ScrollReveal>
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
 import { CourierChain } from "./_components/courier-chain";
 import { EncryptedChannel } from "./_components/encrypted-channel";
@@ -31,50 +32,58 @@ export default function UseContextPage() {
       </div>
 
       {/* Section 1: The Courier Chain */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Courier Chain</h2>
-        <p className="text-muted-foreground">
-          Prop drilling is like passing classified documents through a chain of
-          couriers — every intermediary sees the secret, and each one is a
-          liability.
-        </p>
-        <CourierChain />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Courier Chain</h2>
+          <p className="text-muted-foreground">
+            Prop drilling is like passing classified documents through a chain of
+            couriers — every intermediary sees the secret, and each one is a
+            liability.
+          </p>
+          <CourierChain />
+        </section>
+      </ScrollReveal>
 
-      <Separator />
+      <ScrollReveal><Separator /></ScrollReveal>
 
       {/* Section 2: The Encrypted Channel */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Encrypted Channel</h2>
-        <p className="text-muted-foreground">
-          useContext creates an encrypted channel — HQ broadcasts directly to
-          the field agent. No intermediaries, no leaks.
-        </p>
-        <EncryptedChannel />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Encrypted Channel</h2>
+          <p className="text-muted-foreground">
+            useContext creates an encrypted channel — HQ broadcasts directly to
+            the field agent. No intermediaries, no leaks.
+          </p>
+          <EncryptedChannel />
+        </section>
+      </ScrollReveal>
 
       {/* Section 3: The Spy Playbook */}
-      <section className="space-y-4">
-        <h2 className="text-xl font-bold">The Spy Playbook</h2>
-        <SpyPlaybook />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-xl font-bold">The Spy Playbook</h2>
+          <SpyPlaybook />
+        </section>
+      </ScrollReveal>
 
-      <Separator />
+      <ScrollReveal><Separator /></ScrollReveal>
 
       {/* Section 4: Field Operations */}
-      <section className="space-y-6">
-        <div>
-          <h2 className="text-2xl font-bold mb-2">Field Operations</h2>
-          <p className="text-muted-foreground">
-            Every spy needs field practice. Try these operations — each one uses
-            context to share intel across the network.
-          </p>
-        </div>
+      <ScrollReveal>
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-2xl font-bold mb-2">Field Operations</h2>
+            <p className="text-muted-foreground">
+              Every spy needs field practice. Try these operations — each one uses
+              context to share intel across the network.
+            </p>
+          </div>
 
-        <PlaygroundSafeHouse />
-        <PlaygroundAgentDossier />
-        <PlaygroundCodeLanguage />
-      </section>
+          <PlaygroundSafeHouse />
+          <PlaygroundAgentDossier />
+          <PlaygroundCodeLanguage />
+        </section>
+      </ScrollReveal>
     </div>
   );
 }

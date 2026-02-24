@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
 import { ManualPost } from "./_components/manual-post";
 import { MutationPost } from "./_components/mutation-post";
@@ -29,47 +30,55 @@ export default function UseMutationPage() {
       </div>
 
       {/* Section 1: The Problem */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Manual Way</h2>
-        <p className="text-muted-foreground">
-          Manual POST with try-catch, loading flags, and no cache sync.
-          Each mutation is a pile of boilerplate.
-        </p>
-        <ManualPost />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Manual Way</h2>
+          <p className="text-muted-foreground">
+            Manual POST with try-catch, loading flags, and no cache sync.
+            Each mutation is a pile of boilerplate.
+          </p>
+          <ManualPost />
+        </section>
+      </ScrollReveal>
 
-      <Separator />
+      <ScrollReveal><Separator /></ScrollReveal>
 
       {/* Section 2: The Solution */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Fix: useMutation</h2>
-        <p className="text-muted-foreground">
-          One hook that tracks the full mutation lifecycle — idle, pending,
-          success, error — with callbacks at every step.
-        </p>
-        <MutationPost />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Fix: useMutation</h2>
+          <p className="text-muted-foreground">
+            One hook that tracks the full mutation lifecycle — idle, pending,
+            success, error — with callbacks at every step.
+          </p>
+          <MutationPost />
+        </section>
+      </ScrollReveal>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-bold">Before vs After</h2>
-        <BeforeAfter />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-xl font-bold">Before vs After</h2>
+          <BeforeAfter />
+        </section>
+      </ScrollReveal>
 
-      <Separator />
+      <ScrollReveal><Separator /></ScrollReveal>
 
       {/* Section 3: Playground */}
-      <section className="space-y-6">
-        <div>
-          <h2 className="text-2xl font-bold mb-2">Playground</h2>
-          <p className="text-muted-foreground">
-            useMutation pairs with useQuery for full data management — CRUD
-            operations, cache updates, and optimistic UI.
-          </p>
-        </div>
+      <ScrollReveal>
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-2xl font-bold mb-2">Playground</h2>
+            <p className="text-muted-foreground">
+              useMutation pairs with useQuery for full data management — CRUD
+              operations, cache updates, and optimistic UI.
+            </p>
+          </div>
 
-        <PlaygroundCrud />
-        <PlaygroundOptimistic />
-      </section>
+          <PlaygroundCrud />
+          <PlaygroundOptimistic />
+        </section>
+      </ScrollReveal>
     </div>
   );
 }

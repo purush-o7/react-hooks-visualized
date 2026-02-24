@@ -27,6 +27,7 @@ export default function StateManagementPage() {
   return (
     <div className="max-w-4xl">
       <div className="mb-10">
+        <div className="h-1 w-12 rounded-full bg-green-500 mb-4" />
         <div className="flex items-center gap-2 mb-2">
           <h1 className="text-3xl font-bold tracking-tight">
             State Management
@@ -36,6 +37,11 @@ export default function StateManagementPage() {
         <p className="text-lg text-muted-foreground">
           Hooks for managing local and complex component state.
         </p>
+        <div className="mt-4 rounded-lg border border-green-500/20 bg-green-500/5 px-4 py-3">
+          <p className="text-sm text-green-600 dark:text-green-400">
+            💡 State is what makes React components interactive. These hooks are the most commonly used in any React app.
+          </p>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">

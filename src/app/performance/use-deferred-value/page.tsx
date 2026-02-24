@@ -3,68 +3,86 @@
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
-import { InstantPreview } from "./_components/instant-preview";
-import { DeferredPreview } from "./_components/deferred-preview";
-import { BeforeAfter } from "./_components/before-after";
-import { PlaygroundColorGrid } from "./_components/playground-color-grid";
-import { PlaygroundMarkdown } from "./_components/playground-markdown";
+import { OverloadedBoard } from "./_components/overloaded-board";
+import { SmartBoard } from "./_components/smart-board";
+import { StationBriefing } from "./_components/station-briefing";
+import { PlaygroundAnnouncements } from "./_components/playground-announcements";
+import { PlaygroundConnectionFinder } from "./_components/playground-connection-finder";
+import { PlaygroundScheduleGuide } from "./_components/playground-schedule-guide";
 
 export default function UseDeferredValuePage() {
   return (
     <div className="max-w-3xl space-y-12">
+      {/* Header - NOT wrapped in ScrollReveal */}
       <div>
         <div className="flex items-center gap-3 mb-2">
           <h1 className="text-3xl font-bold font-mono">useDeferredValue</h1>
           <Badge variant="secondary">Performance</Badge>
         </div>
-        <TextEffect
-          preset="fade-in-blur"
-          per="word"
-          className="text-muted-foreground"
-        >
-          What if the expensive part could politely wait its turn?
+        <TextEffect preset="fade-in-blur" per="word" className="text-muted-foreground">
+          What if your departures board could show the last known schedule while
+          computing the new one?
         </TextEffect>
       </div>
 
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Impatient Preview</h2>
-        <p className="text-muted-foreground">
-          Without useDeferredValue, every keystroke regenerates an expensive
-          visualization immediately — making the input lag.
-        </p>
-        <InstantPreview />
-      </section>
-
-      <Separator />
-
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Patient Echo</h2>
-        <p className="text-muted-foreground">
-          useDeferredValue gives React permission to show a slightly stale
-          version of the expensive output while the input stays crispy.
-        </p>
-        <DeferredPreview />
-      </section>
-
-      <section className="space-y-4">
-        <h2 className="text-xl font-bold">Before vs After</h2>
-        <BeforeAfter />
-      </section>
-
-      <Separator />
-
-      <section className="space-y-6">
-        <div>
-          <h2 className="text-2xl font-bold mb-2">Playground</h2>
+      {/* Section 1: Overloaded Board — the broken before */}
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Overloaded Board</h2>
           <p className="text-muted-foreground">
-            useDeferredValue works great with any expensive derived display.
-            Try these interactive examples.
+            Without useDeferredValue, every keystroke forces React to filter all
+            15,000 departures before it can update the input — the information
+            desk freezes on every letter.
           </p>
-        </div>
-        <PlaygroundColorGrid />
-        <PlaygroundMarkdown />
-      </section>
+          <OverloadedBoard />
+        </section>
+      </ScrollReveal>
+
+      <ScrollReveal><Separator /></ScrollReveal>
+
+      {/* Section 2: Smart Board — the fixed after */}
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Smart Board</h2>
+          <p className="text-muted-foreground">
+            useDeferredValue acts like a smart departures board. The information
+            desk updates instantly on every keystroke while the board itself
+            lags behind — showing the last known schedule until the fresh one
+            is ready.
+          </p>
+          <SmartBoard />
+        </section>
+      </ScrollReveal>
+
+      {/* Section 3: Station Briefing — before vs after summary */}
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-xl font-bold">Station Briefing</h2>
+          <StationBriefing />
+        </section>
+      </ScrollReveal>
+
+      <ScrollReveal><Separator /></ScrollReveal>
+
+      {/* Section 4: Playgrounds */}
+      <ScrollReveal>
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-2xl font-bold mb-2">Playground</h2>
+            <p className="text-muted-foreground">
+              useDeferredValue shines wherever a prop or state value triggers
+              expensive rendering. Explore the station — search the timetable,
+              broadcast announcements, and decide when deferral is worth the
+              ticket.
+            </p>
+          </div>
+          <PlaygroundAnnouncements />
+          <PlaygroundConnectionFinder />
+          <PlaygroundScheduleGuide />
+        </section>
+      </ScrollReveal>
     </div>
   );
 }

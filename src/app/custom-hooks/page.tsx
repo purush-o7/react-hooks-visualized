@@ -16,6 +16,7 @@ export default function CustomHooksPage() {
     <div className="max-w-3xl space-y-12">
       {/* Header */}
       <div>
+        <div className="h-1 w-12 rounded-full bg-teal-500 mb-4" />
         <div className="flex items-center gap-3 mb-2">
           <h1 className="text-3xl font-bold font-mono">Custom Hooks</h1>
           <Badge variant="secondary">Pattern</Badge>
@@ -27,6 +28,11 @@ export default function CustomHooksPage() {
         >
           What if you are writing the same stateful logic over and over?
         </TextEffect>
+        <div className="mt-4 rounded-lg border border-teal-500/20 bg-teal-500/5 px-4 py-3">
+          <p className="text-sm text-teal-600 dark:text-teal-400">
+            💡 Custom hooks let you extract and share stateful logic. They're the composition pattern of React.
+          </p>
+        </div>
       </div>
 
       {/* Section 1: The Problem */}

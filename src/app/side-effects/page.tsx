@@ -28,6 +28,7 @@ export default function SideEffectsPage() {
   return (
     <div className="max-w-4xl">
       <div className="mb-10">
+        <div className="h-1 w-12 rounded-full bg-yellow-500 mb-4" />
         <div className="flex items-center gap-2 mb-2">
           <h1 className="text-3xl font-bold tracking-tight">Side Effects</h1>
           <Badge variant="outline">Core</Badge>
@@ -35,6 +36,11 @@ export default function SideEffectsPage() {
         <p className="text-lg text-muted-foreground">
           Hooks for synchronizing with external systems and running side effects.
         </p>
+        <div className="mt-4 rounded-lg border border-yellow-500/20 bg-yellow-500/5 px-4 py-3">
+          <p className="text-sm text-yellow-600 dark:text-yellow-400">
+            💡 Effects connect your React components to the outside world — APIs, timers, DOM manipulation, and more.
+          </p>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">

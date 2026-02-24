@@ -19,7 +19,10 @@ import {
   Lock,
   Shapes,
   Clock,
+  Repeat2,
+  ArrowRight,
 } from "lucide-react";
+import { AnimatedHero } from "./_components/animated-hero";
 
 const reactCategories = [
   {
@@ -81,64 +84,75 @@ const tanstackCategory = {
   hookCount: 2,
 };
 
+const fundamentals = [
+  {
+    href: "/rendering",
+    label: "React Rendering",
+    icon: Activity,
+    description:
+      "How rendering works, what triggers re-renders, and why every hook depends on the render cycle.",
+    topicCount: 6,
+    accent: "text-red-500 bg-red-500/10 border-red-500/20",
+  },
+  {
+    href: "/closures",
+    label: "Closures",
+    icon: Lock,
+    description:
+      "How inner functions capture variables, stale closure traps, and why hooks create new closures each render.",
+    topicCount: 4,
+    accent: "text-amber-500 bg-amber-500/10 border-amber-500/20",
+  },
+  {
+    href: "/immutability",
+    label: "Immutability",
+    icon: Shapes,
+    description:
+      "Value vs reference, why mutation breaks React, spread operator patterns, and immutable array operations.",
+    topicCount: 4,
+    accent: "text-cyan-500 bg-cyan-500/10 border-cyan-500/20",
+  },
+  {
+    href: "/async",
+    label: "Async JavaScript",
+    icon: Clock,
+    description:
+      "Event loop, callbacks to promises, async/await, and handling async operations inside React components.",
+    topicCount: 4,
+    accent: "text-indigo-500 bg-indigo-500/10 border-indigo-500/20",
+  },
+  {
+    href: "/this-and-arrows",
+    label: "this & Arrows",
+    icon: Repeat2,
+    description:
+      "How this changes identity based on context, binding rules, and why arrow functions freeze it forever.",
+    topicCount: 4,
+    accent: "text-purple-500 bg-purple-500/10 border-purple-500/20",
+  },
+];
+
 export default function Home() {
   return (
     <div className="max-w-4xl">
-      <div className="mb-10">
-        <h1 className="text-4xl font-bold tracking-tight mb-2">
-          Learn React Hooks
-        </h1>
-        <p className="text-lg text-muted-foreground">
-          Each page is a self-contained learning topic with explanations, code
-          examples, and interactive demos.
-        </p>
-      </div>
+      <AnimatedHero />
 
       <section className="mb-10">
-        <div className="flex items-center gap-2 mb-4">
+        <div className="flex items-center gap-2 mb-6">
           <h2 className="text-xl font-semibold">Fundamentals</h2>
-          <Badge variant="default">Start Here</Badge>
+          <Badge variant="default" className="bg-gradient-to-r from-amber-500 to-orange-500 border-0">
+            Start Here
+          </Badge>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
-          {[
-            {
-              href: "/rendering",
-              label: "React Rendering",
-              icon: Activity,
-              description:
-                "How rendering works, what triggers re-renders, and why every hook depends on the render cycle.",
-              topicCount: 6,
-            },
-            {
-              href: "/closures",
-              label: "Closures",
-              icon: Lock,
-              description:
-                "How inner functions capture variables, stale closure traps, and why hooks create new closures each render.",
-              topicCount: 4,
-            },
-            {
-              href: "/immutability",
-              label: "Immutability",
-              icon: Shapes,
-              description:
-                "Value vs reference, why mutation breaks React, spread operator patterns, and immutable array operations.",
-              topicCount: 4,
-            },
-            {
-              href: "/async",
-              label: "Async JavaScript",
-              icon: Clock,
-              description:
-                "Event loop, callbacks to promises, async/await, and handling async operations inside React components.",
-              topicCount: 4,
-            },
-          ].map((category) => (
+          {fundamentals.map((category) => (
             <Link key={category.href} href={category.href}>
-              <Card className="h-full transition-colors hover:border-primary/50 hover:shadow-md cursor-pointer">
+              <Card className="group h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer border-border/50 hover:border-border">
                 <CardHeader>
                   <div className="flex items-center gap-2">
-                    <category.icon className="size-4 text-muted-foreground" />
+                    <div className={`rounded-md p-1 ${category.accent}`}>
+                      <category.icon className="size-4" />
+                    </div>
                     <CardTitle className="text-base">
                       {category.label}
                     </CardTitle>
@@ -146,7 +160,11 @@ export default function Home() {
                       {category.topicCount} topics
                     </Badge>
                   </div>
-                  <CardDescription>{category.description}</CardDescription>
+                  <CardDescription className="line-clamp-2">{category.description}</CardDescription>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground/70 pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span>Explore</span>
+                    <ArrowRight className="size-3" />
+                  </div>
                 </CardHeader>
               </Card>
             </Link>
@@ -157,14 +175,14 @@ export default function Home() {
       <Separator className="my-8" />
 
       <section className="mb-10">
-        <div className="flex items-center gap-2 mb-4">
+        <div className="flex items-center gap-2 mb-6">
           <h2 className="text-xl font-semibold">React Hooks</h2>
           <Badge variant="outline">Core</Badge>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           {reactCategories.map((category) => (
             <Link key={category.href} href={category.href}>
-              <Card className="h-full transition-colors hover:border-primary/50 hover:shadow-md cursor-pointer">
+              <Card className="group h-full transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 cursor-pointer border-border/50 hover:border-border">
                 <CardHeader>
                   <div className="flex items-center gap-2">
                     <category.icon className="size-4 text-muted-foreground" />
@@ -187,13 +205,13 @@ export default function Home() {
       <Separator className="my-8" />
 
       <section>
-        <div className="flex items-center gap-2 mb-4">
+        <div className="flex items-center gap-2 mb-6">
           <h2 className="text-xl font-semibold">TanStack Query</h2>
           <Badge variant="secondary">v5</Badge>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <Link href={tanstackCategory.href}>
-            <Card className="h-full transition-colors hover:border-primary/50 hover:shadow-md cursor-pointer">
+            <Card className="group h-full transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 cursor-pointer border-border/50 hover:border-border">
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <tanstackCategory.icon className="size-4 text-muted-foreground" />

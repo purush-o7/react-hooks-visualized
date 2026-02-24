@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
 import { SlowBuilder } from "./_components/slow-builder";
 import { FastBuilder } from "./_components/fast-builder";
@@ -30,49 +31,57 @@ export default function UseMemoPage() {
       </div>
 
       {/* Section 1: The Problem */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Forgetful Builder</h2>
-        <p className="text-muted-foreground">
-          Without useMemo, expensive work runs on every render — even when the
-          result would be exactly the same.
-        </p>
-        <SlowBuilder />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Forgetful Builder</h2>
+          <p className="text-muted-foreground">
+            Without useMemo, expensive work runs on every render — even when the
+            result would be exactly the same.
+          </p>
+          <SlowBuilder />
+        </section>
+      </ScrollReveal>
 
-      <Separator />
+      <ScrollReveal><Separator /></ScrollReveal>
 
       {/* Section 2: The Solution */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Smart Builder</h2>
-        <p className="text-muted-foreground">
-          useMemo caches the tower and only rebuilds when the instructions
-          (height, color) change. Unrelated changes grab the cached version
-          instantly.
-        </p>
-        <FastBuilder />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Smart Builder</h2>
+          <p className="text-muted-foreground">
+            useMemo caches the tower and only rebuilds when the instructions
+            (height, color) change. Unrelated changes grab the cached version
+            instantly.
+          </p>
+          <FastBuilder />
+        </section>
+      </ScrollReveal>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-bold">Before vs After</h2>
-        <BeforeAfter />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-xl font-bold">Before vs After</h2>
+          <BeforeAfter />
+        </section>
+      </ScrollReveal>
 
-      <Separator />
+      <ScrollReveal><Separator /></ScrollReveal>
 
       {/* Section 3: Playground */}
-      <section className="space-y-6">
-        <div>
-          <h2 className="text-2xl font-bold mb-2">Playground</h2>
-          <p className="text-muted-foreground">
-            useMemo works for any derived data — costs, patterns, statistics.
-            Try these Lego-themed examples.
-          </p>
-        </div>
+      <ScrollReveal>
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-2xl font-bold mb-2">Playground</h2>
+            <p className="text-muted-foreground">
+              useMemo works for any derived data — costs, patterns, statistics.
+              Try these Lego-themed examples.
+            </p>
+          </div>
 
-        <PlaygroundTower />
-        <PlaygroundPattern />
-        <PlaygroundInventory />
-      </section>
+          <PlaygroundTower />
+          <PlaygroundPattern />
+          <PlaygroundInventory />
+        </section>
+      </ScrollReveal>
     </div>
   );
 }

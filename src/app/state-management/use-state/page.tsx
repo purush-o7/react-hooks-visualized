@@ -3,18 +3,20 @@
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
-import { BrokenCounter } from "./_components/broken-counter";
-import { FixedCounter } from "./_components/fixed-counter";
-import { BeforeAfter } from "./_components/before-after";
-import { PlaygroundColorMixer } from "./_components/playground-color-mixer";
-import { PlaygroundLightSwitch } from "./_components/playground-light-switch";
-import { PlaygroundCharacterCreator } from "./_components/playground-character-creator";
+import { DeadSwitchboard } from "./_components/dead-switchboard";
+import { LiveSwitchboard } from "./_components/live-switchboard";
+import { SwitchboardBriefing } from "./_components/switchboard-briefing";
+import { PlaygroundLineToggle } from "./_components/playground-line-toggle";
+import { PlaygroundFrequencyTuner } from "./_components/playground-frequency-tuner";
+import { PlaygroundCallRouter } from "./_components/playground-call-router";
+import { PlaygroundLazyInit } from "./_components/playground-lazy-init";
 
 export default function UseStatePage() {
   return (
     <div className="max-w-3xl space-y-12">
-      {/* ── Header ── */}
+      {/* Header - NOT wrapped in ScrollReveal */}
       <div>
         <div className="flex items-center gap-3 mb-2">
           <h1 className="text-3xl font-bold font-mono">useState</h1>
@@ -25,60 +27,71 @@ export default function UseStatePage() {
           per="word"
           className="text-muted-foreground"
         >
-          The most important hook. But first — why do we even need it?
+          Think of useState as a telephone switchboard. Each line is a state
+          variable — plug in a cable and the board lights up, React re-renders.
         </TextEffect>
       </div>
 
-      {/* ── Section 1: The Problem ── */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">
-          First, Let&apos;s Break It
-        </h2>
-        <p className="text-muted-foreground">
-          What happens when you try to use a regular variable for state in React?
-          Click the button and find out.
-        </p>
-        <BrokenCounter />
-      </section>
-
-      <Separator />
-
-      {/* ── Section 2: The Solution ── */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">
-          The Fix: useState
-        </h2>
-        <p className="text-muted-foreground">
-          Same counter, but this time React is in the loop. Watch the number
-          actually change.
-        </p>
-        <FixedCounter />
-      </section>
-
-      {/* Before vs After comparison */}
-      <section className="space-y-4">
-        <h2 className="text-xl font-bold">Before vs After</h2>
-        <BeforeAfter />
-      </section>
-
-      <Separator />
-
-      {/* ── Section 3: Playground ── */}
-      <section className="space-y-6">
-        <div>
-          <h2 className="text-2xl font-bold mb-2">
-            Playground
-          </h2>
+      {/* Section 1: Dead Switchboard — the broken "before" */}
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Dead Switchboard</h2>
           <p className="text-muted-foreground">
-            useState works with more than just numbers. Try these interactive
-            examples to see objects, booleans, and complex state in action.
+            Regular variables are like cables plugged into a switchboard that
+            isn&apos;t powered. The value changes behind the scenes, but React
+            never sees it — the display stays frozen.
           </p>
-        </div>
+          <DeadSwitchboard />
+        </section>
+      </ScrollReveal>
 
-        <PlaygroundColorMixer />
-        <PlaygroundLightSwitch />
-        <PlaygroundCharacterCreator />
-      </section>
+      <ScrollReveal>
+        <Separator />
+      </ScrollReveal>
+
+      {/* Section 2: Live Switchboard — the "after" with useState */}
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Live Switchboard</h2>
+          <p className="text-muted-foreground">
+            useState wires the board to React. Every time you plug in a cable,
+            React sees the connection change and re-renders the display
+            immediately.
+          </p>
+          <LiveSwitchboard />
+        </section>
+      </ScrollReveal>
+
+      {/* Section 3: Briefing — side-by-side comparison */}
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-xl font-bold">Operator Briefing</h2>
+          <SwitchboardBriefing />
+        </section>
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <Separator />
+      </ScrollReveal>
+
+      {/* Section 4: Playgrounds */}
+      <ScrollReveal>
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-2xl font-bold mb-2">The Switchboard Floor</h2>
+            <p className="text-muted-foreground">
+              State isn&apos;t always a single line — booleans, numbers, and
+              objects are all fair game. Each playground below demonstrates a
+              different type of connection on the board.
+            </p>
+          </div>
+
+          <PlaygroundLineToggle />
+          <PlaygroundFrequencyTuner />
+          <PlaygroundCallRouter />
+          <PlaygroundLazyInit />
+        </section>
+      </ScrollReveal>
     </div>
   );
 }

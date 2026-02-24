@@ -41,6 +41,7 @@ export default function PerformancePage() {
   return (
     <div className="max-w-4xl">
       <div className="mb-10">
+        <div className="h-1 w-12 rounded-full bg-orange-500 mb-4" />
         <div className="flex items-center gap-2 mb-2">
           <h1 className="text-3xl font-bold tracking-tight">Performance</h1>
           <Badge variant="outline">Optimization</Badge>
@@ -48,6 +49,11 @@ export default function PerformancePage() {
         <p className="text-lg text-muted-foreground">
           Hooks for optimizing rendering performance through memoization.
         </p>
+        <div className="mt-4 rounded-lg border border-orange-500/20 bg-orange-500/5 px-4 py-3">
+          <p className="text-sm text-orange-600 dark:text-orange-400">
+            💡 These hooks help you skip unnecessary work. Learn when optimization matters and when it's premature.
+          </p>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">

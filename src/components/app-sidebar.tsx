@@ -33,6 +33,7 @@ import {
   Lock,
   Shapes,
   Clock,
+  Repeat2,
 } from "lucide-react";
 import {
   Sidebar,
@@ -115,6 +116,18 @@ const asyncCategory: Category = {
     { href: "/async/callbacks-to-promises", label: "Callbacks to Promises", icon: GitBranch },
     { href: "/async/async-await", label: "Async / Await", icon: Play },
     { href: "/async/async-in-react", label: "Async in React", icon: Zap },
+  ],
+};
+
+const thisAndArrowsCategory: Category = {
+  label: "this & Arrows",
+  href: "/this-and-arrows",
+  icon: Repeat2,
+  hooks: [
+    { href: "/this-and-arrows/what-is-this", label: "What is this?", icon: Eye },
+    { href: "/this-and-arrows/binding-rules", label: "Binding Rules", icon: Link2 },
+    { href: "/this-and-arrows/arrow-functions", label: "Arrow Functions", icon: Zap },
+    { href: "/this-and-arrows/this-in-react", label: "this in React", icon: Repeat2 },
   ],
 };
 
@@ -231,9 +244,9 @@ function CategoryItem({
   if (category.hooks.length === 0) {
     return (
       <SidebarMenuItem>
-        <SidebarMenuButton asChild isActive={pathname === category.href}>
+        <SidebarMenuButton asChild isActive={pathname === category.href} className="group/btn">
           <Link href={category.href}>
-            <category.icon />
+            <category.icon className="transition-transform duration-200 group-hover/btn:scale-110" />
             <span>{category.label}</span>
           </Link>
         </SidebarMenuButton>
@@ -245,19 +258,20 @@ function CategoryItem({
     <Collapsible asChild defaultOpen={isActive}>
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
-          <SidebarMenuButton tooltip={category.label}>
-            <category.icon />
+          <SidebarMenuButton tooltip={category.label} className="group/btn">
+            <category.icon className="transition-transform duration-200 group-hover/btn:scale-110" />
             <span>{category.label}</span>
-            <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+            <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 group-hover/btn:translate-x-0.5" />
           </SidebarMenuButton>
         </CollapsibleTrigger>
-        <CollapsibleContent>
+        <CollapsibleContent className="transition-all duration-200 ease-in-out data-[state=closed]:opacity-0 data-[state=open]:opacity-100">
           <SidebarMenuSub>
             {category.hooks.map((hook) => (
               <SidebarMenuSubItem key={hook.href}>
                 <SidebarMenuSubButton
                   asChild
                   isActive={pathname === hook.href}
+                  className="transition-all duration-150 hover:translate-x-0.5"
                 >
                   <Link href={hook.href}>
                     <span className="font-mono text-xs">{hook.label}</span>
@@ -307,6 +321,10 @@ export function AppSidebar() {
               />
               <CategoryItem
                 category={asyncCategory}
+                pathname={pathname}
+              />
+              <CategoryItem
+                category={thisAndArrowsCategory}
                 pathname={pathname}
               />
             </SidebarMenu>

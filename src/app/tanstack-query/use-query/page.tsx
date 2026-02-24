@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
 import { ManualFetch } from "./_components/manual-fetch";
 import { QueryFetch } from "./_components/query-fetch";
@@ -30,48 +31,56 @@ export default function UseQueryPage() {
       </div>
 
       {/* Section 1: The Problem */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Manual Way</h2>
-        <p className="text-muted-foreground">
-          Three useState hooks, a useEffect, error handling, and no caching.
-          Every time you navigate back, it re-fetches from scratch.
-        </p>
-        <ManualFetch />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Manual Way</h2>
+          <p className="text-muted-foreground">
+            Three useState hooks, a useEffect, error handling, and no caching.
+            Every time you navigate back, it re-fetches from scratch.
+          </p>
+          <ManualFetch />
+        </section>
+      </ScrollReveal>
 
-      <Separator />
+      <ScrollReveal><Separator /></ScrollReveal>
 
       {/* Section 2: The Solution */}
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Fix: useQuery</h2>
-        <p className="text-muted-foreground">
-          One hook that handles loading, errors, caching, and background
-          refetching. The same data, but smarter.
-        </p>
-        <QueryFetch />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Fix: useQuery</h2>
+          <p className="text-muted-foreground">
+            One hook that handles loading, errors, caching, and background
+            refetching. The same data, but smarter.
+          </p>
+          <QueryFetch />
+        </section>
+      </ScrollReveal>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-bold">Before vs After</h2>
-        <BeforeAfter />
-      </section>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-xl font-bold">Before vs After</h2>
+          <BeforeAfter />
+        </section>
+      </ScrollReveal>
 
-      <Separator />
+      <ScrollReveal><Separator /></ScrollReveal>
 
       {/* Section 3: Playground */}
-      <section className="space-y-6">
-        <div>
-          <h2 className="text-2xl font-bold mb-2">Playground</h2>
-          <p className="text-muted-foreground">
-            useQuery does more than basic fetching — query keys, caching, and
-            automatic polling. Try these examples.
-          </p>
-        </div>
+      <ScrollReveal>
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-2xl font-bold mb-2">Playground</h2>
+            <p className="text-muted-foreground">
+              useQuery does more than basic fetching — query keys, caching, and
+              automatic polling. Try these examples.
+            </p>
+          </div>
 
-        <PlaygroundPosts />
-        <PlaygroundUserSelector />
-        <PlaygroundPolling />
-      </section>
+          <PlaygroundPosts />
+          <PlaygroundUserSelector />
+          <PlaygroundPolling />
+        </section>
+      </ScrollReveal>
     </div>
   );
 }

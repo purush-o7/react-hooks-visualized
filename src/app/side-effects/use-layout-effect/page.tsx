@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
+import { ScrollReveal } from "@/components/scroll-reveal";
 
 import { ImpatientContractor } from "./_components/impatient-contractor";
 import { MasterArchitect } from "./_components/master-architect";
@@ -27,46 +28,54 @@ export default function UseLayoutEffectPage() {
         </TextEffect>
       </div>
 
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Impatient Contractor</h2>
-        <p className="text-muted-foreground">
-          With useEffect, the furniture renders at a default position first, then
-          jumps to the correct spot after measurement — the client watches it
-          teleport across the room.
-        </p>
-        <ImpatientContractor />
-      </section>
-
-      <Separator />
-
-      <section className="space-y-4">
-        <h2 className="text-2xl font-bold">The Master Architect</h2>
-        <p className="text-muted-foreground">
-          useLayoutEffect measures the room synchronously before the browser
-          paints — so the furniture appears in the right place immediately. The
-          client never sees it move.
-        </p>
-        <MasterArchitect />
-      </section>
-
-      <section className="space-y-4">
-        <h2 className="text-xl font-bold">The Blueprint Legend</h2>
-        <BlueprintLegend />
-      </section>
-
-      <Separator />
-
-      <section className="space-y-6">
-        <div>
-          <h2 className="text-2xl font-bold mb-2">Architect Tools</h2>
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Impatient Contractor</h2>
           <p className="text-muted-foreground">
-            useLayoutEffect is essential when you need DOM measurements before
-            paint. Try these interactive blueprints.
+            With useEffect, the furniture renders at a default position first, then
+            jumps to the correct spot after measurement — the client watches it
+            teleport across the room.
           </p>
-        </div>
-        <PlaygroundFloorplan />
-        <PlaygroundWallSign />
-      </section>
+          <ImpatientContractor />
+        </section>
+      </ScrollReveal>
+
+      <ScrollReveal><Separator /></ScrollReveal>
+
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-2xl font-bold">The Master Architect</h2>
+          <p className="text-muted-foreground">
+            useLayoutEffect measures the room synchronously before the browser
+            paints — so the furniture appears in the right place immediately. The
+            client never sees it move.
+          </p>
+          <MasterArchitect />
+        </section>
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <section className="space-y-4">
+          <h2 className="text-xl font-bold">The Blueprint Legend</h2>
+          <BlueprintLegend />
+        </section>
+      </ScrollReveal>
+
+      <ScrollReveal><Separator /></ScrollReveal>
+
+      <ScrollReveal>
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-2xl font-bold mb-2">Architect Tools</h2>
+            <p className="text-muted-foreground">
+              useLayoutEffect is essential when you need DOM measurements before
+              paint. Try these interactive blueprints.
+            </p>
+          </div>
+          <PlaygroundFloorplan />
+          <PlaygroundWallSign />
+        </section>
+      </ScrollReveal>
     </div>
   );
 }
