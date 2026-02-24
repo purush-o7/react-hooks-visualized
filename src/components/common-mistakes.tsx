@@ -68,7 +68,7 @@ function MistakeCard({
           </TabsList>
 
           <TabsContent value="wrong">
-            <div className="rounded-xl border border-red-500/20 overflow-hidden">
+            <div className="rounded-xl border border-red-500/20 overflow-hidden [&_.group\/code]:my-0 [&_.group\/code]:rounded-none [&_.group\/code]:border-0 [&_.group\/code]:shadow-none">
               <div className="flex items-center gap-1.5 px-3 py-1.5 border-b border-red-500/15 bg-red-500/[0.06]">
                 <X className="size-3 text-red-500" />
                 <span className="text-[11px] text-red-400 font-medium">
@@ -80,7 +80,7 @@ function MistakeCard({
           </TabsContent>
 
           <TabsContent value="right">
-            <div className="rounded-xl border border-green-500/20 overflow-hidden">
+            <div className="rounded-xl border border-green-500/20 overflow-hidden [&_.group\/code]:my-0 [&_.group\/code]:rounded-none [&_.group\/code]:border-0 [&_.group\/code]:shadow-none">
               <div className="flex items-center gap-1.5 px-3 py-1.5 border-b border-green-500/15 bg-green-500/[0.06]">
                 <Check className="size-3 text-green-500" />
                 <span className="text-[11px] text-green-400 font-medium">
