@@ -11,6 +11,7 @@ import { BeforeAfter } from "./_components/before-after";
 import { PlaygroundPosts } from "./_components/playground-posts";
 import { PlaygroundUserSelector } from "./_components/playground-user-selector";
 import { PlaygroundPolling } from "./_components/playground-polling";
+import { PlaygroundPagination } from "./_components/playground-pagination";
 
 export default function UseQueryPage() {
   return (
@@ -79,6 +80,7 @@ export default function UseQueryPage() {
           <PlaygroundPosts />
           <PlaygroundUserSelector />
           <PlaygroundPolling />
+          <PlaygroundPagination />
         </section>
       </ScrollReveal>
     </div>
