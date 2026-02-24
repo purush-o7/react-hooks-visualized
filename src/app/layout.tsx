@@ -8,7 +8,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { BreadcrumbNav } from "@/components/breadcrumb-nav";
 import { TopicNav } from "@/components/topic-nav";
 import { TableOfContents } from "@/components/table-of-contents";
-import { SiteCredits } from "@/components/site-credits";
+import { Github } from "lucide-react";
 import { PageTransition } from "@/components/page-transition";
 import { KeyboardProvider } from "@/components/keyboard-provider";
 import "./globals.css";
@@ -52,7 +52,16 @@ export default function RootLayout({
                   <SidebarTrigger className="-ml-1" />
                   <Separator orientation="vertical" className="mr-2 !h-4" />
                   <BreadcrumbNav />
-                  <div className="ml-auto">
+                  <div className="ml-auto flex items-center gap-1">
+                    <a
+                      href="https://github.com/purush-o7/react-hooks-visualized"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground h-7 w-7"
+                    >
+                      <Github className="size-4" />
+                      <span className="sr-only">GitHub</span>
+                    </a>
                     <ThemeToggle />
                   </div>
                 </header>
@@ -62,7 +71,6 @@ export default function RootLayout({
                       {children}
                     </PageTransition>
                     <TopicNav />
-                    <SiteCredits className="xl:hidden border-t mt-12 pt-6 pb-4 max-w-sm" />
                   </div>
                   <TableOfContents />
                 </div>

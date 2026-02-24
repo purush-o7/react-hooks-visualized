@@ -3,7 +3,6 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { SiteCredits } from "@/components/site-credits";
 
 interface TocItem {
   id: string;
@@ -70,52 +69,45 @@ export function TableOfContents() {
     return () => observer.disconnect();
   }, [headings]);
 
+  if (headings.length < 3) return null;
+
   return (
     <aside className="hidden xl:flex w-56 shrink-0 flex-col border-l">
-      {/* Table of Contents */}
-      {headings.length >= 3 && (
-        <nav className="flex-1 overflow-y-auto py-6 px-4">
-          <div className="space-y-1">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground/50 mb-2 font-medium">
-              On this page
-            </p>
-            {headings.map((heading) => (
-              <a
-                key={heading.id}
-                href={`#${heading.id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  const el = document.getElementById(heading.id);
-                  if (el && scrollContainerRef.current) {
-                    const container = scrollContainerRef.current;
-                    const elTop = el.getBoundingClientRect().top;
-                    const containerTop =
-                      container.getBoundingClientRect().top;
-                    container.scrollBy({
-                      top: elTop - containerTop - 80,
-                      behavior: "smooth",
-                    });
-                  }
-                }}
-                className={cn(
-                  "block text-xs py-1 pl-3 border-l-2 transition-all duration-200 truncate",
-                  activeId === heading.id
-                    ? "border-foreground text-foreground font-medium"
-                    : "border-transparent text-muted-foreground/60 hover:text-muted-foreground hover:border-muted-foreground/30"
-                )}
-              >
-                {heading.text}
-              </a>
-            ))}
-          </div>
-        </nav>
-      )}
-
-      {/* Spacer when no TOC */}
-      {headings.length < 3 && <div className="flex-1" />}
-
-      {/* Credits */}
-      <SiteCredits className="border-t px-4 py-4" />
+      <nav className="flex-1 overflow-y-auto py-6 px-4">
+        <div className="space-y-1">
+          <p className="text-[10px] uppercase tracking-wider text-muted-foreground/50 mb-2 font-medium">
+            On this page
+          </p>
+          {headings.map((heading) => (
+            <a
+              key={heading.id}
+              href={`#${heading.id}`}
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.getElementById(heading.id);
+                if (el && scrollContainerRef.current) {
+                  const container = scrollContainerRef.current;
+                  const elTop = el.getBoundingClientRect().top;
+                  const containerTop =
+                    container.getBoundingClientRect().top;
+                  container.scrollBy({
+                    top: elTop - containerTop - 80,
+                    behavior: "smooth",
+                  });
+                }
+              }}
+              className={cn(
+                "block text-xs py-1 pl-3 border-l-2 transition-all duration-200 truncate",
+                activeId === heading.id
+                  ? "border-foreground text-foreground font-medium"
+                  : "border-transparent text-muted-foreground/60 hover:text-muted-foreground hover:border-muted-foreground/30"
+              )}
+            >
+              {heading.text}
+            </a>
+          ))}
+        </div>
+      </nav>
     </aside>
   );
 }

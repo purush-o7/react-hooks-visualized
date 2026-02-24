@@ -46,6 +46,7 @@ import {
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -64,6 +65,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Badge } from "@/components/ui/badge";
+import { SiteCredits } from "@/components/site-credits";
 
 type HookItem = {
   href: string;
@@ -383,6 +385,9 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter className="p-4">
+        <SiteCredits />
+      </SidebarFooter>
     </Sidebar>
   );
 }
