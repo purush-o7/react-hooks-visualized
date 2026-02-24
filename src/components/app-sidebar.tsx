@@ -30,6 +30,9 @@ import {
   GitBranch,
   Flame,
   Equal,
+  Lock,
+  Shapes,
+  Clock,
 } from "lucide-react";
 import {
   Sidebar,
@@ -76,6 +79,42 @@ const renderingCategory: Category = {
     { href: "/rendering/render-cascade", label: "Render Cascade", icon: GitBranch },
     { href: "/rendering/expensive-work", label: "Expensive Work", icon: Flame },
     { href: "/rendering/reference-trap", label: "Reference Trap", icon: Equal },
+  ],
+};
+
+const closuresCategory: Category = {
+  label: "Closures",
+  href: "/closures",
+  icon: Lock,
+  hooks: [
+    { href: "/closures/what-is-a-closure", label: "What is a Closure?", icon: Eye },
+    { href: "/closures/closures-in-loops", label: "Closures in Loops", icon: Repeat },
+    { href: "/closures/stale-closures", label: "Stale Closures", icon: Timer },
+    { href: "/closures/closures-and-hooks", label: "Closures & Hooks", icon: Link2 },
+  ],
+};
+
+const immutabilityCategory: Category = {
+  label: "Immutability",
+  href: "/immutability",
+  icon: Shapes,
+  hooks: [
+    { href: "/immutability/value-vs-reference", label: "Value vs Reference", icon: Equal },
+    { href: "/immutability/why-mutation-breaks-react", label: "Why Mutation Breaks React", icon: Flame },
+    { href: "/immutability/spreading-101", label: "Spreading 101", icon: Layers },
+    { href: "/immutability/array-operations", label: "Array Operations", icon: Database },
+  ],
+};
+
+const asyncCategory: Category = {
+  label: "Async JavaScript",
+  href: "/async",
+  icon: Clock,
+  hooks: [
+    { href: "/async/event-loop", label: "Event Loop", icon: RotateCcw },
+    { href: "/async/callbacks-to-promises", label: "Callbacks to Promises", icon: GitBranch },
+    { href: "/async/async-await", label: "Async / Await", icon: Play },
+    { href: "/async/async-in-react", label: "Async in React", icon: Zap },
   ],
 };
 
@@ -256,6 +295,18 @@ export function AppSidebar() {
             <SidebarMenu>
               <CategoryItem
                 category={renderingCategory}
+                pathname={pathname}
+              />
+              <CategoryItem
+                category={closuresCategory}
+                pathname={pathname}
+              />
+              <CategoryItem
+                category={immutabilityCategory}
+                pathname={pathname}
+              />
+              <CategoryItem
+                category={asyncCategory}
                 pathname={pathname}
               />
             </SidebarMenu>

@@ -16,6 +16,9 @@ import {
   Gauge,
   Puzzle,
   Database,
+  Lock,
+  Shapes,
+  Clock,
 } from "lucide-react";
 
 const reactCategories = [
@@ -96,23 +99,59 @@ export default function Home() {
           <h2 className="text-xl font-semibold">Fundamentals</h2>
           <Badge variant="default">Start Here</Badge>
         </div>
-        <Link href="/rendering">
-          <Card className="transition-colors hover:border-primary/50 hover:shadow-md cursor-pointer">
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <Activity className="size-4 text-muted-foreground" />
-                <CardTitle className="text-base">React Rendering</CardTitle>
-                <Badge variant="secondary" className="ml-auto text-[10px]">
-                  6 topics
-                </Badge>
-              </div>
-              <CardDescription>
-                How rendering works, what triggers re-renders, and why every
-                hook depends on the render cycle. Read this first.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        </Link>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {[
+            {
+              href: "/rendering",
+              label: "React Rendering",
+              icon: Activity,
+              description:
+                "How rendering works, what triggers re-renders, and why every hook depends on the render cycle.",
+              topicCount: 6,
+            },
+            {
+              href: "/closures",
+              label: "Closures",
+              icon: Lock,
+              description:
+                "How inner functions capture variables, stale closure traps, and why hooks create new closures each render.",
+              topicCount: 4,
+            },
+            {
+              href: "/immutability",
+              label: "Immutability",
+              icon: Shapes,
+              description:
+                "Value vs reference, why mutation breaks React, spread operator patterns, and immutable array operations.",
+              topicCount: 4,
+            },
+            {
+              href: "/async",
+              label: "Async JavaScript",
+              icon: Clock,
+              description:
+                "Event loop, callbacks to promises, async/await, and handling async operations inside React components.",
+              topicCount: 4,
+            },
+          ].map((category) => (
+            <Link key={category.href} href={category.href}>
+              <Card className="h-full transition-colors hover:border-primary/50 hover:shadow-md cursor-pointer">
+                <CardHeader>
+                  <div className="flex items-center gap-2">
+                    <category.icon className="size-4 text-muted-foreground" />
+                    <CardTitle className="text-base">
+                      {category.label}
+                    </CardTitle>
+                    <Badge variant="secondary" className="ml-auto text-[10px]">
+                      {category.topicCount} topics
+                    </Badge>
+                  </div>
+                  <CardDescription>{category.description}</CardDescription>
+                </CardHeader>
+              </Card>
+            </Link>
+          ))}
+        </div>
       </section>
 
       <Separator className="my-8" />
