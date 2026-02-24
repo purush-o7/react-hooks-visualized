@@ -31,6 +31,9 @@ export const metadata: Metadata = {
   description:
     "Interactive learning guide for React Hooks with Next.js and TanStack Query",
   metadataBase: new URL("https://hooks-101.vercel.app"),
+  verification: {
+    google: "r83TWgTAEda5miv_XKKzGBcEWi4uvJmtY0ywEp6rNF0",
+  },
 };
 
 export default function RootLayout({
