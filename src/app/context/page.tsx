@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Card,
@@ -6,16 +7,21 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Share2 } from "lucide-react";
+import { Radio } from "lucide-react";
 
 const hooks = [
   {
     href: "/context/use-context",
     label: "useContext",
-    icon: Share2,
+    icon: Radio,
     description: "Share state across components without prop drilling.",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Context Hook",
+  description: "useContext — share state across the component tree without prop drilling",
+};
 
 export default function ContextPage() {
   return (

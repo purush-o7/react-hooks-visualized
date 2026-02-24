@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Card,
@@ -6,7 +7,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Eye, Repeat, Timer, Link2 } from "lucide-react";
+import { Eye, Repeat, Ghost, Link2 } from "lucide-react";
 
 const topics = [
   {
@@ -26,7 +27,7 @@ const topics = [
   {
     href: "/closures/stale-closures",
     label: "Stale Closures",
-    icon: Timer,
+    icon: Ghost,
     description:
       "When a function captures an old value and never sees the update. The #1 React hooks gotcha.",
   },
@@ -38,6 +39,11 @@ const topics = [
       "Each render creates a new closure. This is why dependency arrays exist and why stale state happens.",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "JavaScript Closures",
+  description: "How inner functions capture variables, stale closure traps, and why hooks create new closures each render",
+};
 
 export default function ClosuresPage() {
   return (

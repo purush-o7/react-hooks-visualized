@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Card,
@@ -6,7 +7,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { RefreshCw, Ruler } from "lucide-react";
+import { RefreshCw, LayoutDashboard } from "lucide-react";
 
 const hooks = [
   {
@@ -18,11 +19,16 @@ const hooks = [
   {
     href: "/side-effects/use-layout-effect",
     label: "useLayoutEffect",
-    icon: Ruler,
+    icon: LayoutDashboard,
     description:
       "Measure and mutate the DOM synchronously before the browser paints.",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Side Effect Hooks",
+  description: "useEffect and useLayoutEffect — synchronize with external systems and the DOM",
+};
 
 export default function SideEffectsPage() {
   return (

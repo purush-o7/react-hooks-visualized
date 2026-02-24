@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Card,
@@ -6,19 +7,24 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Brain, Repeat, Hourglass, Timer } from "lucide-react";
+import { Gem, Bookmark, Hourglass, Timer } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Performance Hooks",
+  description: "useMemo, useCallback, useTransition, and useDeferredValue — optimize rendering",
+};
 
 const hooks = [
   {
     href: "/performance/use-memo",
     label: "useMemo",
-    icon: Brain,
+    icon: Gem,
     description: "Memoize expensive computations to avoid recalculation.",
   },
   {
     href: "/performance/use-callback",
     label: "useCallback",
-    icon: Repeat,
+    icon: Bookmark,
     description: "Memoize functions to prevent unnecessary re-renders.",
   },
   {

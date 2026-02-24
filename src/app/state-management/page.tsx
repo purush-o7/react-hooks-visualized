@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Card,
@@ -6,7 +7,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Layers, Eye } from "lucide-react";
+import { Layers, Workflow } from "lucide-react";
 
 const hooks = [
   {
@@ -18,10 +19,15 @@ const hooks = [
   {
     href: "/state-management/use-reducer",
     label: "useReducer",
-    icon: Eye,
+    icon: Workflow,
     description: "Manage complex state logic with a reducer pattern.",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "State Management Hooks",
+  description: "useState and useReducer — manage local and complex component state",
+};
 
 export default function StateManagementPage() {
   return (

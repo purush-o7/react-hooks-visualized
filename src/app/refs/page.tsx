@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Card,
@@ -6,13 +7,18 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Pointer, Fingerprint, SlidersHorizontal } from "lucide-react";
+import { Crosshair, Fingerprint, SlidersHorizontal } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Ref Hooks",
+  description: "useRef, useId, and useImperativeHandle — DOM access, unique IDs, and controlled refs",
+};
 
 const hooks = [
   {
     href: "/refs/use-ref",
     label: "useRef",
-    icon: Pointer,
+    icon: Crosshair,
     description: "Access DOM elements and persist values across renders.",
   },
   {

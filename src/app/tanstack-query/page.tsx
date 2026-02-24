@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Card,
@@ -7,6 +8,11 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Database, Pencil } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "TanStack Query Hooks",
+  description: "useQuery and useMutation — fetch, cache, and mutate server state",
+};
 
 const hooks = [
   {

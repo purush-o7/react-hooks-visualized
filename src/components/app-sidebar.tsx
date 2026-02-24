@@ -7,33 +7,41 @@ import {
   BookOpen,
   RefreshCw,
   Eye,
-  Share2,
-  Pointer,
-  Brain,
-  Repeat,
+  Radio,
+  Crosshair,
+  Gem,
+  Bookmark,
   Layers,
   Database,
   Pencil,
-  Puzzle,
+  Wrench,
   ChevronRight,
-  Box,
+  ToggleLeft,
   Zap,
   Gauge,
-  Link2,
+  Network,
   Hourglass,
   Timer,
-  Ruler,
+  LayoutDashboard,
   Fingerprint,
   SlidersHorizontal,
-  RotateCcw,
+  Orbit,
   Play,
-  GitBranch,
+  ArrowRightLeft,
   Flame,
-  Equal,
-  Lock,
-  Shapes,
+  Copy,
+  PackageOpen,
+  Snowflake,
   Clock,
+  AtSign,
   Repeat2,
+  Workflow,
+  Ghost,
+  Link2,
+  Repeat,
+  RotateCcw,
+  GitBranch,
+  Equal,
 } from "lucide-react";
 import {
   Sidebar,
@@ -45,6 +53,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuAction,
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
@@ -86,11 +95,11 @@ const renderingCategory: Category = {
 const closuresCategory: Category = {
   label: "Closures",
   href: "/closures",
-  icon: Lock,
+  icon: PackageOpen,
   hooks: [
     { href: "/closures/what-is-a-closure", label: "What is a Closure?", icon: Eye },
     { href: "/closures/closures-in-loops", label: "Closures in Loops", icon: Repeat },
-    { href: "/closures/stale-closures", label: "Stale Closures", icon: Timer },
+    { href: "/closures/stale-closures", label: "Stale Closures", icon: Ghost },
     { href: "/closures/closures-and-hooks", label: "Closures & Hooks", icon: Link2 },
   ],
 };
@@ -98,9 +107,9 @@ const closuresCategory: Category = {
 const immutabilityCategory: Category = {
   label: "Immutability",
   href: "/immutability",
-  icon: Shapes,
+  icon: Snowflake,
   hooks: [
-    { href: "/immutability/value-vs-reference", label: "Value vs Reference", icon: Equal },
+    { href: "/immutability/value-vs-reference", label: "Value vs Reference", icon: Copy },
     { href: "/immutability/why-mutation-breaks-react", label: "Why Mutation Breaks React", icon: Flame },
     { href: "/immutability/spreading-101", label: "Spreading 101", icon: Layers },
     { href: "/immutability/array-operations", label: "Array Operations", icon: Database },
@@ -112,8 +121,8 @@ const asyncCategory: Category = {
   href: "/async",
   icon: Clock,
   hooks: [
-    { href: "/async/event-loop", label: "Event Loop", icon: RotateCcw },
-    { href: "/async/callbacks-to-promises", label: "Callbacks to Promises", icon: GitBranch },
+    { href: "/async/event-loop", label: "Event Loop", icon: Orbit },
+    { href: "/async/callbacks-to-promises", label: "Callbacks to Promises", icon: ArrowRightLeft },
     { href: "/async/async-await", label: "Async / Await", icon: Play },
     { href: "/async/async-in-react", label: "Async in React", icon: Zap },
   ],
@@ -122,7 +131,7 @@ const asyncCategory: Category = {
 const thisAndArrowsCategory: Category = {
   label: "this & Arrows",
   href: "/this-and-arrows",
-  icon: Repeat2,
+  icon: AtSign,
   hooks: [
     { href: "/this-and-arrows/what-is-this", label: "What is this?", icon: Eye },
     { href: "/this-and-arrows/binding-rules", label: "Binding Rules", icon: Link2 },
@@ -135,13 +144,13 @@ const reactCategories: Category[] = [
   {
     label: "State Management",
     href: "/state-management",
-    icon: Box,
+    icon: ToggleLeft,
     hooks: [
       { href: "/state-management/use-state", label: "useState", icon: Layers },
       {
         href: "/state-management/use-reducer",
         label: "useReducer",
-        icon: Eye,
+        icon: Workflow,
       },
     ],
   },
@@ -158,24 +167,24 @@ const reactCategories: Category[] = [
       {
         href: "/side-effects/use-layout-effect",
         label: "useLayoutEffect",
-        icon: Ruler,
+        icon: LayoutDashboard,
       },
     ],
   },
   {
     label: "Context",
     href: "/context",
-    icon: Link2,
+    icon: Network,
     hooks: [
-      { href: "/context/use-context", label: "useContext", icon: Share2 },
+      { href: "/context/use-context", label: "useContext", icon: Radio },
     ],
   },
   {
     label: "Refs",
     href: "/refs",
-    icon: Pointer,
+    icon: Crosshair,
     hooks: [
-      { href: "/refs/use-ref", label: "useRef", icon: Pointer },
+      { href: "/refs/use-ref", label: "useRef", icon: Crosshair },
       { href: "/refs/use-id", label: "useId", icon: Fingerprint },
       {
         href: "/refs/use-imperative-handle",
@@ -189,11 +198,11 @@ const reactCategories: Category[] = [
     href: "/performance",
     icon: Gauge,
     hooks: [
-      { href: "/performance/use-memo", label: "useMemo", icon: Brain },
+      { href: "/performance/use-memo", label: "useMemo", icon: Gem },
       {
         href: "/performance/use-callback",
         label: "useCallback",
-        icon: Repeat,
+        icon: Bookmark,
       },
       {
         href: "/performance/use-transition",
@@ -210,7 +219,7 @@ const reactCategories: Category[] = [
   {
     label: "Custom Hooks",
     href: "/custom-hooks",
-    icon: Puzzle,
+    icon: Wrench,
     hooks: [],
   },
 ];
@@ -257,12 +266,16 @@ function CategoryItem({
   return (
     <Collapsible asChild defaultOpen={isActive}>
       <SidebarMenuItem>
-        <CollapsibleTrigger asChild>
-          <SidebarMenuButton tooltip={category.label} className="group/btn">
+        <SidebarMenuButton asChild isActive={pathname === category.href} tooltip={category.label} className="group/btn">
+          <Link href={category.href}>
             <category.icon className="transition-transform duration-200 group-hover/btn:scale-110" />
             <span>{category.label}</span>
-            <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 group-hover/btn:translate-x-0.5" />
-          </SidebarMenuButton>
+          </Link>
+        </SidebarMenuButton>
+        <CollapsibleTrigger asChild>
+          <SidebarMenuAction className="data-[state=open]:rotate-90 transition-transform duration-200">
+            <ChevronRight />
+          </SidebarMenuAction>
         </CollapsibleTrigger>
         <CollapsibleContent className="transition-all duration-200 ease-in-out data-[state=closed]:opacity-0 data-[state=open]:opacity-100">
           <SidebarMenuSub>

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Card,
@@ -6,13 +7,13 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Equal, Flame, Layers, Database } from "lucide-react";
+import { Copy, Flame, Layers, Database } from "lucide-react";
 
 const topics = [
   {
     href: "/immutability/value-vs-reference",
     label: "Value vs Reference",
-    icon: Equal,
+    icon: Copy,
     description:
       "Primitives are copied by value (like mixing a new glaze). Objects are shared by reference (like pointing to the same pot).",
   },
@@ -38,6 +39,11 @@ const topics = [
       "Immutable add, remove, and update patterns that replace push, splice, and direct index assignment.",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Immutability in React",
+  description: "Value vs reference, why mutation breaks React, spread patterns, and immutable array operations",
+};
 
 export default function ImmutabilityPage() {
   return (

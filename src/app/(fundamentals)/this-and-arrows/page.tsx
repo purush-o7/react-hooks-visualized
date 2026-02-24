@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Card,
@@ -38,6 +39,11 @@ const topics = [
       "The class component binding pain, why hooks solved it, and how arrow functions made event handlers simple.",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "this & Arrow Functions",
+  description: "How this changes based on context, binding rules, and why arrow functions lock it in place",
+};
 
 export default function ThisAndArrowsPage() {
   return (

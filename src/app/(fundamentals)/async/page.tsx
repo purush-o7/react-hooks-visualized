@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Card,
@@ -6,20 +7,20 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { RotateCcw, GitBranch, Play, Zap } from "lucide-react";
+import { Orbit, ArrowRightLeft, Play, Zap } from "lucide-react";
 
 const topics = [
   {
     href: "/async/event-loop",
     label: "Event Loop",
-    icon: RotateCcw,
+    icon: Orbit,
     description:
       "The call stack, Web APIs, callback queue, and the single-threaded event loop that orchestrates them all.",
   },
   {
     href: "/async/callbacks-to-promises",
     label: "Callbacks to Promises",
-    icon: GitBranch,
+    icon: ArrowRightLeft,
     description:
       "From callback hell to .then() chains. Plus Promise.all, Promise.race, and error handling.",
   },
@@ -38,6 +39,11 @@ const topics = [
       "Why useEffect can't be async, AbortController for cleanup, and how to prevent race conditions.",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Async JavaScript",
+  description: "Event loop, callbacks to promises, async/await, and handling async in React",
+};
 
 export default function AsyncPage() {
   return (

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Card,
@@ -7,6 +8,11 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Eye, RotateCcw, Play, GitBranch, Flame, Equal } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "React Rendering",
+  description: "How rendering works, what triggers re-renders, and why every hook depends on the render cycle",
+};
 
 const topics = [
   {
