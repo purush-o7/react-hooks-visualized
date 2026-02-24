@@ -31,6 +31,22 @@ export default function UseCallbackPage() {
         </TextEffect>
       </div>
 
+      <ScrollReveal>
+        <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
+          <p className="font-medium flex items-center gap-2">
+            <span>📱</span> Theme: Phone Speed Dial
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Your component is a phone with speed-dial buttons. Every render, the
+            phone re-engraves all its buttons &mdash; even though the contacts
+            haven&apos;t changed. Memo&apos;d children (ContactList) compare
+            button serial numbers, so re-engraved buttons look
+            &quot;new&quot; and trigger a re-render. useCallback keeps the same
+            button until contacts actually change.
+          </p>
+        </div>
+      </ScrollReveal>
+
       {/* Section 1: The Problem — Redial Frenzy */}
       <ScrollReveal>
         <section className="space-y-4">

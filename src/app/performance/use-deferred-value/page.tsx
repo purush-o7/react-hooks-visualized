@@ -27,6 +27,21 @@ export default function UseDeferredValuePage() {
         </TextEffect>
       </div>
 
+      <ScrollReveal>
+        <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
+          <p className="font-medium flex items-center gap-2">
+            <span>🚂</span> Theme: Train Station Departure Board
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Your UI is a train station departure board. When schedules change,
+            updating every single row at once overloads the board and freezes
+            the ticket counter. useDeferredValue is the smart board: the ticket
+            counter (input) stays responsive while the departure board updates
+            in the background with a slight delay.
+          </p>
+        </div>
+      </ScrollReveal>
+
       {/* Section 1: Overloaded Board — the broken before */}
       <ScrollReveal>
         <section className="space-y-4">

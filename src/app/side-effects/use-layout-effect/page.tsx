@@ -29,6 +29,21 @@ export default function UseLayoutEffectPage() {
       </div>
 
       <ScrollReveal>
+        <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
+          <p className="font-medium flex items-center gap-2">
+            <span>📐</span> Theme: Blueprint Architect
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Your component is a building under construction. useLayoutEffect is
+            the architect who measures the room and adjusts the blueprint before
+            anyone walks in. Unlike the regular contractor (useEffect), the
+            architect works synchronously between the build and the reveal
+            &mdash; no flicker, no repositioning after the doors open.
+          </p>
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal>
         <section className="space-y-4">
           <h2 className="text-2xl font-bold">The Impatient Contractor</h2>
           <p className="text-muted-foreground">

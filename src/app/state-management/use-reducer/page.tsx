@@ -31,6 +31,22 @@ export default function UseReducerPage() {
         </TextEffect>
       </div>
 
+      <ScrollReveal>
+        <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
+          <p className="font-medium flex items-center gap-2">
+            <span>🚀</span> Theme: Space Launch Mission Control
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Your component is a mission control center. Multiple systems (fuel,
+            oxygen, comms) need coordinated updates. Without useReducer, each
+            operator uses their own radio &mdash; chaos. The Flight Commander
+            (reducer) processes every command through one protocol: receive an
+            action, return the new state. Predictable, testable, and one source
+            of truth.
+          </p>
+        </div>
+      </ScrollReveal>
+
       {/* Section 1: Chaotic Ground Control */}
       <ScrollReveal>
         <section className="space-y-4">

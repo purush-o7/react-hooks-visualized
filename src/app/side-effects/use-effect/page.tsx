@@ -31,6 +31,21 @@ export default function UseEffectPage() {
         </TextEffect>
       </div>
 
+      <ScrollReveal>
+        <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
+          <p className="font-medium flex items-center gap-2">
+            <span>🎧</span> Theme: DJ Booth
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Your component is a DJ booth. Rendering is dropping the beat
+            &mdash; but side effects (timers, API calls, event listeners) are
+            the equipment setup. useEffect is your roadie: it wires up gear
+            after each performance and tears it down before the next set,
+            keeping the booth clean.
+          </p>
+        </div>
+      </ScrollReveal>
+
       {/* Section 1: The Chaotic DJ */}
       <ScrollReveal>
         <section className="space-y-4">

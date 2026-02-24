@@ -26,6 +26,22 @@ export default function UseTransitionPage() {
         </TextEffect>
       </div>
 
+      <ScrollReveal>
+        <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
+          <p className="font-medium flex items-center gap-2">
+            <span>🏥</span> Theme: Emergency Room
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Your UI is a hospital ER. Without triage, every update &mdash;
+            typing in the search box, rendering 10,000 patient records &mdash;
+            fights for the same thread. The hotline freezes while records load.
+            useTransition is the triage nurse: it keeps the hotline (urgent
+            updates like typing) open while heavy patient records process in
+            the background.
+          </p>
+        </div>
+      </ScrollReveal>
+
       {/* Section 1: Overwhelmed ER — the broken before */}
       <ScrollReveal>
         <section className="space-y-4">

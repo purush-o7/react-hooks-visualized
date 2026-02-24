@@ -30,6 +30,22 @@ export default function UseIdPage() {
         </TextEffect>
       </div>
 
+      <ScrollReveal>
+        <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
+          <p className="font-medium flex items-center gap-2">
+            <span>🅿️</span> Theme: Valet Parking
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Your component is a parking lot. Without tickets, two valets serving
+            the same car model hand back the wrong keys &mdash; IDs collide.
+            useId is the ticket printer: it stamps a guaranteed-unique ticket
+            for every car, works across multiple lots (server + client
+            rendering), and never duplicates even when the same form appears
+            twice on the page.
+          </p>
+        </div>
+      </ScrollReveal>
+
       {/* Section 1: The Problem — No Ticket Lot */}
       <ScrollReveal>
         <section className="space-y-4">

@@ -30,6 +30,21 @@ export default function UseMemoPage() {
         </TextEffect>
       </div>
 
+      <ScrollReveal>
+        <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
+          <p className="font-medium flex items-center gap-2">
+            <span>🧱</span> Theme: Lego Builder
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Your component is a Lego workbench. Every render, the builder tears
+            down the previous creation and rebuilds from scratch &mdash; even
+            when the instructions haven&apos;t changed. useMemo is a display
+            shelf: once you build a tower, you place it on the shelf and only
+            rebuild when the instructions (dependencies) actually change.
+          </p>
+        </div>
+      </ScrollReveal>
+
       {/* Section 1: The Problem */}
       <ScrollReveal>
         <section className="space-y-4">

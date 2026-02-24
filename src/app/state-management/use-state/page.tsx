@@ -32,6 +32,21 @@ export default function UseStatePage() {
         </TextEffect>
       </div>
 
+      <ScrollReveal>
+        <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
+          <p className="font-medium flex items-center gap-2">
+            <span>🔌</span> Theme: Telephone Switchboard
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Your component is a telephone switchboard. State values are
+            connections &mdash; plug one in and the board lights up
+            (re-renders). Without useState, you can move cables around all day,
+            but the board stays dead. setState is the act of plugging a cable
+            into a jack React can see.
+          </p>
+        </div>
+      </ScrollReveal>
+
       {/* Section 1: Dead Switchboard — the broken "before" */}
       <ScrollReveal>
         <section className="space-y-4">

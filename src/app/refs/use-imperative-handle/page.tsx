@@ -32,6 +32,21 @@ export default function UseImperativeHandlePage() {
         </TextEffect>
       </div>
 
+      <ScrollReveal>
+        <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
+          <p className="font-medium flex items-center gap-2">
+            <span>🏦</span> Theme: Bank Vault
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Your child component is a bank vault. Passing a raw ref is like
+            leaving the vault door wide open &mdash; the parent can reach in
+            and touch anything. useImperativeHandle is the teller window: you
+            expose only specific operations (focus, scroll, reset) through a
+            controlled slot while the vault internals stay locked.
+          </p>
+        </div>
+      </ScrollReveal>
+
       {/* Section 1: Unlocked Vault — the dangerous "before" */}
       <ScrollReveal>
         <section className="space-y-4">

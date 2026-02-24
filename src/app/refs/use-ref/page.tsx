@@ -31,6 +31,22 @@ export default function UseRefPage() {
         </TextEffect>
       </div>
 
+      <ScrollReveal>
+        <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
+          <p className="font-medium flex items-center gap-2">
+            <span>📷</span> Theme: Photography Studio
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Your component is a photography studio. useState is a loud shutter
+            &mdash; every shot echoes through the gallery (triggers a
+            re-render). useRef is the photographer&apos;s private notebook: it
+            silently records shot counts, timer IDs, and exposure settings
+            without disturbing the gallery. It can also point the lens at any
+            DOM element.
+          </p>
+        </div>
+      </ScrollReveal>
+
       {/* Section 1: The Problem — Loud Shutter */}
       <ScrollReveal>
         <section className="space-y-4">

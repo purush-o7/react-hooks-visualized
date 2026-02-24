@@ -31,6 +31,21 @@ export default function UseContextPage() {
         </TextEffect>
       </div>
 
+      <ScrollReveal>
+        <div className="rounded-lg border bg-muted/50 p-4 space-y-2">
+          <p className="font-medium flex items-center gap-2">
+            <span>🕵️</span> Theme: Spy Network
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Your app is a spy network. Prop drilling is like passing classified
+            documents through a chain of couriers &mdash; every intermediary
+            handles the secret. useContext is an encrypted radio channel: HQ
+            (Provider) broadcasts intel, and any field agent (consumer) tunes in
+            directly. No couriers, no leaks, no middlemen.
+          </p>
+        </div>
+      </ScrollReveal>
+
       {/* Section 1: The Courier Chain */}
       <ScrollReveal>
         <section className="space-y-4">
