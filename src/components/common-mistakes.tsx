@@ -17,6 +17,7 @@ import {
   CollapsibleContent,
 } from "@/components/ui/collapsible";
 import { CodeBlock } from "@/components/code-block";
+import { trackEvent } from "@/lib/analytics";
 
 export interface Mistake {
   title: string;
@@ -111,7 +112,10 @@ export function CommonMistakes({ mistakes }: CommonMistakesProps) {
   const [open, setOpen] = useState(true);
 
   return (
-    <Collapsible open={open} onOpenChange={setOpen}>
+    <Collapsible open={open} onOpenChange={(value) => {
+      setOpen(value);
+      trackEvent("toggle_mistakes", "engagement", value ? "expand" : "collapse");
+    }}>
       <section className="space-y-4">
         <CollapsibleTrigger className="flex w-full items-center justify-between group cursor-pointer">
           <div className="flex items-center gap-3">

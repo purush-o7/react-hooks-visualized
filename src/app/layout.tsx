@@ -9,6 +9,7 @@ import { BreadcrumbNav } from "@/components/breadcrumb-nav";
 import { TopicNav } from "@/components/topic-nav";
 import { TableOfContents } from "@/components/table-of-contents";
 import { Github } from "lucide-react";
+import { GoogleAnalytics } from "@/components/google-analytics";
 import { PageTransition } from "@/components/page-transition";
 import { KeyboardProvider } from "@/components/keyboard-provider";
 import "./globals.css";
@@ -46,6 +47,7 @@ export default function RootLayout({
       <body
         className={`${outfit.variable} ${jetbrainsMono.variable} antialiased`}
       >
+        <GoogleAnalytics />
         <Providers>
           <SidebarProvider>
             <AppSidebar />
