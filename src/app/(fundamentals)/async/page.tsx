@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CommonMistakes, type Mistake } from "@/components/common-mistakes";
+import { JsonLd } from "@/components/json-ld";
 import { Orbit, ArrowRightLeft, Play, Zap } from "lucide-react";
 
 const topics = [
@@ -136,6 +137,32 @@ useEffect(() => {
 export default function AsyncPage() {
   return (
     <div className="max-w-4xl">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Async JavaScript",
+          description:
+            "Event loop, callbacks to promises, async/await, and handling async in React",
+          url: "https://hooks-101.vercel.app/async",
+          hasPart: topics.map((t) => ({
+            "@type": "TechArticle",
+            name: t.label,
+            url: `https://hooks-101.vercel.app${t.href}`,
+          })),
+        }}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: ASYNC_MISTAKES.map((m) => ({
+            "@type": "Question",
+            name: m.title,
+            acceptedAnswer: { "@type": "Answer", text: m.explanation },
+          })),
+        }}
+      />
       <div className="mb-10">
         <div className="h-1 w-12 rounded-full bg-indigo-500 mb-4" />
         <div className="flex items-center gap-2 mb-2">

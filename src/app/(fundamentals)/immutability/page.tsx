@@ -9,6 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Copy, Flame, Layers, Database } from "lucide-react";
 import { CommonMistakes, type Mistake } from "@/components/common-mistakes";
+import { JsonLd } from "@/components/json-ld";
 
 const topics = [
   {
@@ -137,6 +138,34 @@ const IMMUTABILITY_MISTAKES: Mistake[] = [
 export default function ImmutabilityPage() {
   return (
     <div className="max-w-4xl">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Immutability in React",
+          description: "Value vs reference, why mutation breaks React, spread patterns, and immutable array operations",
+          url: "https://hooks-101.vercel.app/immutability",
+          hasPart: topics.map((t) => ({
+            "@type": "TechArticle",
+            name: t.label,
+            url: `https://hooks-101.vercel.app${t.href}`,
+          })),
+        }}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: IMMUTABILITY_MISTAKES.map((m) => ({
+            "@type": "Question",
+            name: m.title,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: m.explanation,
+            },
+          })),
+        }}
+      />
       <div className="mb-10">
         <div className="h-1 w-12 rounded-full bg-teal-500 mb-4" />
         <div className="flex items-center gap-2 mb-2">

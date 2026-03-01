@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Crosshair, Fingerprint, SlidersHorizontal } from "lucide-react";
+import { JsonLd } from "@/components/json-ld";
 
 export const metadata: Metadata = {
   title: "Ref Hooks",
@@ -40,6 +41,21 @@ const hooks = [
 export default function RefsPage() {
   return (
     <div className="max-w-4xl">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Ref Hooks",
+          description:
+            "useRef, useId, and useImperativeHandle — DOM access, unique IDs, and controlled refs",
+          url: "https://hooks-101.vercel.app/refs",
+          hasPart: hooks.map((h) => ({
+            "@type": "TechArticle",
+            name: h.label,
+            url: `https://hooks-101.vercel.app${h.href}`,
+          })),
+        }}
+      />
       <div className="mb-10">
         <div className="h-1 w-12 rounded-full bg-pink-500 mb-4" />
         <div className="flex items-center gap-2 mb-2">

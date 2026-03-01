@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CommonMistakes, type Mistake } from "@/components/common-mistakes";
+import { JsonLd } from "@/components/json-ld";
 import { Eye, RotateCcw, Play, GitBranch, Flame, Equal } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -142,6 +143,34 @@ const MemoizedExpensiveList = React.memo(ExpensiveList);`,
 export default function RenderingPage() {
   return (
     <div className="max-w-4xl">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "React Rendering",
+          description: "How rendering works, what triggers re-renders, and why every hook depends on the render cycle",
+          url: "https://hooks-101.vercel.app/rendering",
+          hasPart: topics.map((t) => ({
+            "@type": "TechArticle",
+            name: t.label,
+            url: `https://hooks-101.vercel.app${t.href}`,
+          })),
+        }}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: RENDERING_MISTAKES.map((m) => ({
+            "@type": "Question",
+            name: m.title,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: m.explanation,
+            },
+          })),
+        }}
+      />
       <div className="mb-10">
         <div className="h-1 w-12 rounded-full bg-red-500 mb-4" />
         <div className="flex items-center gap-2 mb-2">

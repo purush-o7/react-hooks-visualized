@@ -7,6 +7,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { JsonLd } from "@/components/json-ld";
 import { RefreshCw, LayoutDashboard } from "lucide-react";
 
 const hooks = [
@@ -33,6 +34,21 @@ export const metadata: Metadata = {
 export default function SideEffectsPage() {
   return (
     <div className="max-w-4xl">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Side Effect Hooks",
+          description:
+            "useEffect and useLayoutEffect — synchronize with external systems and the DOM",
+          url: "https://hooks-101.vercel.app/side-effects",
+          hasPart: hooks.map((t) => ({
+            "@type": "TechArticle",
+            name: t.label,
+            url: `https://hooks-101.vercel.app${t.href}`,
+          })),
+        }}
+      />
       <div className="mb-10">
         <div className="h-1 w-12 rounded-full bg-yellow-500 mb-4" />
         <div className="flex items-center gap-2 mb-2">

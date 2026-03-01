@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Gem, Bookmark, Hourglass, Timer } from "lucide-react";
+import { JsonLd } from "@/components/json-ld";
 
 export const metadata: Metadata = {
   title: "Performance Hooks",
@@ -46,6 +47,21 @@ const hooks = [
 export default function PerformancePage() {
   return (
     <div className="max-w-4xl">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Performance Hooks",
+          description:
+            "useMemo, useCallback, useTransition, and useDeferredValue — optimize rendering",
+          url: "https://hooks-101.vercel.app/performance",
+          hasPart: hooks.map((h) => ({
+            "@type": "TechArticle",
+            name: h.label,
+            url: `https://hooks-101.vercel.app${h.href}`,
+          })),
+        }}
+      />
       <div className="mb-10">
         <div className="h-1 w-12 rounded-full bg-orange-500 mb-4" />
         <div className="flex items-center gap-2 mb-2">

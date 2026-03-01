@@ -13,6 +13,8 @@ import { GoogleAnalytics } from "@/components/google-analytics";
 import { PageTransition } from "@/components/page-transition";
 import { KeyboardProvider } from "@/components/keyboard-provider";
 import { CommandPalette } from "@/components/command-palette";
+import { JsonLd } from "@/components/json-ld";
+import { BreadcrumbJsonLd } from "@/components/breadcrumb-json-ld";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -49,6 +51,17 @@ export default function RootLayout({
         className={`${outfit.variable} ${jetbrainsMono.variable} antialiased`}
       >
         <GoogleAnalytics />
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "Learn React Hooks",
+            url: "https://hooks-101.vercel.app",
+            description:
+              "Interactive learning guide for React Hooks with Next.js and TanStack Query",
+          }}
+        />
+        <BreadcrumbJsonLd />
         <Providers>
           <SidebarProvider>
             <AppSidebar />

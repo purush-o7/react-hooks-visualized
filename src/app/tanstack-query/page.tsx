@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Database, Pencil } from "lucide-react";
+import { JsonLd } from "@/components/json-ld";
 
 export const metadata: Metadata = {
   title: "TanStack Query Hooks",
@@ -32,6 +33,21 @@ const hooks = [
 export default function TanStackQueryPage() {
   return (
     <div className="max-w-4xl">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "TanStack Query Hooks",
+          description:
+            "useQuery and useMutation — fetch, cache, and mutate server state",
+          url: "https://hooks-101.vercel.app/tanstack-query",
+          hasPart: hooks.map((h) => ({
+            "@type": "TechArticle",
+            name: h.label,
+            url: `https://hooks-101.vercel.app${h.href}`,
+          })),
+        }}
+      />
       <div className="mb-10">
         <div className="h-1 w-12 rounded-full bg-violet-500 mb-4" />
         <div className="flex items-center gap-2 mb-2">

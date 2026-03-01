@@ -7,6 +7,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { JsonLd } from "@/components/json-ld";
 import { Radio } from "lucide-react";
 
 const hooks = [
@@ -26,6 +27,21 @@ export const metadata: Metadata = {
 export default function ContextPage() {
   return (
     <div className="max-w-4xl">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Context Hook",
+          description:
+            "useContext — share state across the component tree without prop drilling",
+          url: "https://hooks-101.vercel.app/context",
+          hasPart: hooks.map((t) => ({
+            "@type": "TechArticle",
+            name: t.label,
+            url: `https://hooks-101.vercel.app${t.href}`,
+          })),
+        }}
+      />
       <div className="mb-10">
         <div className="h-1 w-12 rounded-full bg-blue-500 mb-4" />
         <div className="flex items-center gap-2 mb-2">

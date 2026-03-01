@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { TextEffect } from "@/components/ui/text-effect";
+import { JsonLd } from "@/components/json-ld";
 
 import { DuplicatedLogic } from "./_components/duplicated-logic";
 import { ExtractedHook } from "./_components/extracted-hook";
@@ -14,6 +15,18 @@ import { PlaygroundUseLocalStorage } from "./_components/playground-use-local-st
 export default function CustomHooksPage() {
   return (
     <div className="max-w-3xl space-y-12">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "TechArticle",
+          headline: "Custom Hooks",
+          description:
+            "Extract and reuse stateful logic across components with custom hooks",
+          author: { "@type": "Person", name: "Purush" },
+          publisher: { "@type": "Organization", name: "Learn React Hooks" },
+          url: "https://hooks-101.vercel.app/custom-hooks",
+        }}
+      />
       {/* Header */}
       <div>
         <div className="h-1 w-12 rounded-full bg-teal-500 mb-4" />

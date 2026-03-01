@@ -9,6 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Eye, Link2, Zap, Repeat2 } from "lucide-react";
 import { CommonMistakes, type Mistake } from "@/components/common-mistakes";
+import { JsonLd } from "@/components/json-ld";
 
 const topics = [
   {
@@ -139,6 +140,32 @@ person.greet(); // "Hi, I'm Alice"`,
 export default function ThisAndArrowsPage() {
   return (
     <div className="max-w-4xl">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "this & Arrow Functions",
+          description:
+            "How this changes based on context, binding rules, and why arrow functions lock it in place",
+          url: "https://hooks-101.vercel.app/this-and-arrows",
+          hasPart: topics.map((t) => ({
+            "@type": "TechArticle",
+            name: t.label,
+            url: `https://hooks-101.vercel.app${t.href}`,
+          })),
+        }}
+      />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: THIS_AND_ARROWS_MISTAKES.map((m) => ({
+            "@type": "Question",
+            name: m.title,
+            acceptedAnswer: { "@type": "Answer", text: m.explanation },
+          })),
+        }}
+      />
       <div className="mb-10">
         <div className="h-1 w-12 rounded-full bg-purple-500 mb-4" />
         <div className="flex items-center gap-2 mb-2">
