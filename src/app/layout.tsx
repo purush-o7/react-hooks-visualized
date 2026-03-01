@@ -12,6 +12,7 @@ import { Github } from "lucide-react";
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { PageTransition } from "@/components/page-transition";
 import { KeyboardProvider } from "@/components/keyboard-provider";
+import { CommandPalette } from "@/components/command-palette";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -58,6 +59,7 @@ export default function RootLayout({
                   <Separator orientation="vertical" className="mr-2 !h-4" />
                   <BreadcrumbNav />
                   <div className="ml-auto flex items-center gap-1">
+                    <CommandPalette />
                     <a
                       href="https://github.com/purush-o7/react-hooks-visualized"
                       target="_blank"
